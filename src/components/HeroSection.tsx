@@ -52,7 +52,7 @@ export const HeroSection = () => {
         </motion.div>
         
         <div className="flex gap-12">
-          {["HOME", "SKILLS", "PROJECTS", "CONTACT"].map((link, i) => (
+          {["HOME", "SKILLS", "PROJECTS", "RESUME", "CONTACT"].map((link, i) => (
             <motion.a
               key={link}
               href={`#${link.toLowerCase()}`}
@@ -124,6 +124,10 @@ export const HeroSection = () => {
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(255, 77, 166, 0.4)" }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                const el = document.getElementById('projects');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="bg-primary text-primary-foreground px-10 py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold shadow-[0_0_20px_rgba(255,77,166,0.2)] transition-shadow"
             >
               View My Work

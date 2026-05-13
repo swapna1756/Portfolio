@@ -13,6 +13,7 @@ import { TableOfContents } from "@/components/TableOfContents";
 import { CertificatesSection } from "@/components/CertificatesSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { SkillsSection } from "@/components/SkillsSection";
+import { ResumeSection } from "@/components/ResumeSection";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
@@ -135,6 +136,7 @@ export default function Home() {
             <CertificatesSection />
             <SkillsSection />
             <ProjectsSection />
+            <ResumeSection />
             
             <div className="fixed bottom-8 right-8 z-50">
               <button 

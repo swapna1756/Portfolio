@@ -13,6 +13,7 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
     { id: "certificates", title: "CERTIFICATES", number: "01" },
     { id: "projects", title: "PROJECTS", number: "02" },
     { id: "skills", title: "SKILLS", number: "03" },
+    { id: "resume", title: "RESUME", number: "04" },
   ];
 
   const container = {
@@ -87,7 +88,6 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
               onClick={() => onNavigate(card.id)}
               className={`
                 relative cursor-pointer group glass-button p-8 rounded-[2rem] border border-white/10
-                ${index === 2 ? 'md:col-span-2' : ''}
               `}
             >
               {/* Card Number */}
