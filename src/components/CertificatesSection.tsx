@@ -74,7 +74,10 @@ export const CertificatesSection = () => {
     const saved = localStorage.getItem('portfolio_certs');
     if (saved) {
       try {
-        setCerts(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Ensure "Full Stack Developer Certificate" is filtered out even if it was in localStorage
+        const filtered = parsed.filter((c: Certificate) => c.title !== "Full Stack Developer Certificate");
+        setCerts(filtered);
       } catch (e) {
         console.error("Failed to load certificates", e);
         setCerts(DEFAULT_CERTS);
@@ -150,7 +153,6 @@ export const CertificatesSection = () => {
             : c
         ));
         setReplacingId(null);
-        // If the selected cert is the one being replaced, update the modal view too
         if (selectedCert?.id === replacingId) {
           setSelectedCert(prev => prev ? { ...prev, imageUrl: isPdf ? "" : reader.result as string, isPdf } : null);
         }
@@ -241,7 +243,6 @@ export const CertificatesSection = () => {
           </button>
         </motion.div>
 
-        {/* Hidden inputs for file selection */}
         <input 
           type="file" 
           ref={fileInputRef} 
@@ -259,7 +260,6 @@ export const CertificatesSection = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Upload Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -304,11 +304,9 @@ export const CertificatesSection = () => {
                     alt={cert.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
-                    data-ai-hint="certificate"
                   />
                 )}
                 
-                {/* Hover Overlay */}
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 backdrop-blur-[2px]">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
