@@ -11,6 +11,7 @@ import { PortfolioDashboard } from "@/components/PortfolioDashboard";
 import { TableOfContents } from "@/components/TableOfContents";
 import { CertificatesSection } from "@/components/CertificatesSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
+import { SkillsSection } from "@/components/SkillsSection";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
@@ -97,6 +98,7 @@ export default function Home() {
             <PortfolioDashboard onTerminate={() => setIsEntering(false)} />
             <TableOfContents onNavigate={handleNavigate} />
             <CertificatesSection />
+            <SkillsSection />
             <ProjectsSection />
             
             <div className="fixed bottom-8 right-8 z-50">
