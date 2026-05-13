@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2, Edit3 } from "lucide-react";
+import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2, Edit3, Camera } from "lucide-react";
 import Image from "next/image";
 
 interface Certificate {
@@ -77,7 +77,6 @@ export const CertificatesSection = () => {
   const replaceInputRef = useRef<HTMLInputElement>(null);
   const [replacingId, setReplacingId] = useState<string | null>(null);
 
-  // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('portfolio_certs');
     if (saved) {
@@ -90,7 +89,6 @@ export const CertificatesSection = () => {
     setIsLoaded(true);
   }, []);
 
-  // Save to localStorage whenever certs change
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem('portfolio_certs', JSON.stringify(certs));
@@ -126,7 +124,7 @@ export const CertificatesSection = () => {
           const newCert: Certificate = {
             id: Math.random().toString(36).substr(2, 9),
             title: file.name.split('.')[0],
-            issuer: "New Achievement",
+            issuer: "Uploaded Achievement",
             date: new Date().getFullYear().toString(),
             imageUrl: isPdf ? "" : reader.result as string,
             isPdf: isPdf
@@ -167,7 +165,9 @@ export const CertificatesSection = () => {
 
   const removeCert = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setCerts(prev => prev.filter(c => c.id !== id));
+    if (confirm("Remove this certificate?")) {
+      setCerts(prev => prev.filter(c => c.id !== id));
+    }
   };
 
   const resetToDefaults = () => {
@@ -224,7 +224,7 @@ export const CertificatesSection = () => {
             MY <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>CERTIFICATES</span>
           </h2>
           <p className="text-white/40 text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
-            Professional Learning & Achievements. You can upload or replace any certificate with your own.
+            Click any certificate to replace the image or upload new ones.
           </p>
           
           <button 
@@ -234,6 +234,23 @@ export const CertificatesSection = () => {
             Reset to defaults
           </button>
         </motion.div>
+
+        {/* Hidden inputs for file selection */}
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          onChange={handleFileUpload} 
+          multiple 
+          className="hidden" 
+          accept="image/*,application/pdf"
+        />
+        <input 
+          type="file" 
+          ref={replaceInputRef} 
+          onChange={handleReplaceImage} 
+          className="hidden" 
+          accept="image/*,application/pdf"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Upload Card */}
@@ -249,21 +266,6 @@ export const CertificatesSection = () => {
               isDragging ? "border-primary bg-primary/10" : "border-white/10 bg-white/5 hover:border-primary/50 hover:bg-white/10"
             }`}
           >
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileUpload} 
-              multiple 
-              className="hidden" 
-              accept="image/*,application/pdf"
-            />
-            <input 
-              type="file" 
-              ref={replaceInputRef} 
-              onChange={handleReplaceImage} 
-              className="hidden" 
-              accept="image/*,application/pdf"
-            />
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <Plus className="w-8 h-8 text-primary" />
             </div>
@@ -300,32 +302,34 @@ export const CertificatesSection = () => {
                   />
                 )}
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                {/* Action Buttons Overlay */}
-                <div className="absolute top-4 right-4 flex gap-2 z-20">
-                  <button
+                {/* Cinematic Hover Overlay for Replacement */}
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-[2px]">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                     onClick={(e) => triggerReplace(cert.id, e)}
-                    title="Replace with your own image"
-                    className="p-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-primary opacity-0 group-hover:opacity-100 transition-all hover:bg-primary hover:text-white"
+                    className="glass-button p-4 rounded-2xl flex flex-col items-center gap-2 border-primary/30 mb-4"
                   >
-                    <Edit3 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={(e) => removeCert(cert.id, e)}
-                    title="Remove Certificate"
-                    className="p-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-red-400 opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                    <Camera className="w-6 h-6 text-primary" />
+                    <span className="text-[9px] tracking-[0.3em] uppercase font-bold text-white">Change Image</span>
+                  </motion.button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleOpenModal(cert, index)}
+                      className="p-3 rounded-full bg-white/10 hover:bg-primary/20 text-white transition-colors border border-white/10"
+                    >
+                      <ZoomIn className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={(e) => removeCert(cert.id, e)}
+                      className="p-3 rounded-full bg-white/10 hover:bg-red-500/20 text-red-400 transition-colors border border-white/10"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
-                <button
-                  onClick={() => handleOpenModal(cert, index)}
-                  className="absolute bottom-4 right-4 bg-primary text-primary-foreground p-3 rounded-full translate-y-12 group-hover:translate-y-0 transition-transform duration-300 shadow-[0_0_20px_#FF4DA6] z-20"
-                >
-                  <ZoomIn className="w-4 h-4" />
-                </button>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </div>
 
               <div className="flex-1 px-2 pb-2">
@@ -353,6 +357,7 @@ export const CertificatesSection = () => {
                       href={cert.imageUrl} 
                       download={cert.title}
                       className="p-2 text-white/40 hover:text-primary transition-colors"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <Download className="w-4 h-4" />
                     </a>
@@ -448,7 +453,7 @@ export const CertificatesSection = () => {
                       onClick={(e) => triggerReplace(selectedCert.id, e as any)}
                       className="w-full glass-button py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold text-primary flex items-center justify-center gap-3"
                     >
-                      <Edit3 className="w-4 h-4" /> Replace Image
+                      <Camera className="w-4 h-4" /> Replace Image
                     </button>
                     {selectedCert.imageUrl && !selectedCert.isPdf && (
                       <a 
