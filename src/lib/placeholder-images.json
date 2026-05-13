@@ -3,8 +3,8 @@
     {
       "id": "profile-photo",
       "description": "Swapna Tekkala Profile Photo",
-      "imageUrl": "https://picsum.photos/seed/swapna/600/800",
-      "imageHint": "professional portrait"
+      "imageUrl": "https://picsum.photos/seed/cyber-dev/600/800",
+      "imageHint": "cyberpunk professional portrait"
     }
   ]
 }

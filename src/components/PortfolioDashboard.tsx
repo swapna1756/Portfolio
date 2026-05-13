@@ -103,8 +103,8 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
         {/* Left Side: Profile Photo & Name */}
         <div className="w-full md:w-[45%] relative flex flex-col p-12 justify-end group overflow-hidden">
           {/* Cinematic Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent z-10" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/40 to-transparent z-10" />
           
           {/* Neon Glow Behind Image */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 blur-[100px] rounded-full group-hover:bg-primary/30 transition-all duration-1000 animate-pulse" />
@@ -122,7 +122,7 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
                 alt={profileImage.description}
                 fill
                 priority
-                className="object-cover object-center opacity-80 transition-all duration-1000"
+                className="object-cover object-center opacity-70 transition-all duration-1000 grayscale-[0.2] hover:grayscale-0"
                 data-ai-hint={profileImage.imageHint}
               />
             </motion.div>
@@ -209,7 +209,7 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
                 <div className="flex-1 h-[1px] bg-white/5" />
               </div>
               <div className="flex flex-wrap gap-3">
-                {skills.map((skill, index) => (
+                {skills.map((skill) => (
                   <motion.div
                     key={skill.name}
                     whileHover={{ 
@@ -229,7 +229,7 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
 
           {/* Bottom Social Icons */}
           <div className="mt-16 flex items-center gap-5 relative">
-            {socialIcons.map((social, i) => (
+            {socialIcons.map((social) => (
               <div key={social.id} className="relative">
                 <AnimatePresence>
                   {activeInfo === social.id && (
@@ -263,31 +263,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
           </div>
         </div>
       </motion.div>
-
-      {/* Parallax Floating Particles */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        {Array.from({ length: 30 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/20 rounded-full"
-            animate={{
-              y: [0, -120, 0],
-              x: [0, Math.random() * 60 - 30, 0],
-              opacity: [0, 0.6, 0],
-              scale: [1, 1.5, 1]
-            }}
-            transition={{
-              duration: 6 + Math.random() * 8,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
     </section>
   );
 };
