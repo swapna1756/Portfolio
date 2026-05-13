@@ -7,15 +7,13 @@ import { BubbleTypography } from "@/components/BubbleTypography";
 import { ButterflyOverlay } from "@/components/ButterflyOverlay";
 import { GlimmerCursor } from "@/components/GlimmerCursor";
 import { DynamicTagline } from "@/components/DynamicTagline";
+import { HeroSection } from "@/components/HeroSection";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
 
   const handleEnter = () => {
     setIsEntering(true);
-    setTimeout(() => {
-      window.scrollTo(0, window.innerHeight);
-    }, 1200);
   };
 
   return (
@@ -29,21 +27,20 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-1/4 w-[30vw] h-[30vw] rounded-full bg-secondary/10 blur-[100px] animate-pulse-glow" style={{ animationDelay: '2s' }} />
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {!isEntering ? (
           <motion.div
             key="intro"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ 
-              scale: 2, 
-              filter: "blur(20px)",
+              scale: 1.5, 
+              filter: "blur(40px)",
               opacity: 0,
-              transition: { duration: 1, ease: "easeInOut" }
+              transition: { duration: 0.8, ease: "easeInOut" }
             }}
             className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4"
           >
-            {/* Header / Intro Sequence */}
             <BubbleTypography />
             
             <motion.div
@@ -81,17 +78,16 @@ export default function Home() {
         ) : (
           <motion.div
             key="content"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
-            className="relative z-30 flex items-center justify-center min-h-screen"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="relative z-30 w-full"
           >
-            <div className="text-center px-6">
-              <h2 className="text-4xl md:text-6xl font-headline text-white mb-6 tracking-tight">System Access Granted</h2>
-              <p className="text-white/40 tracking-[0.3em] uppercase text-xs">Decryption Complete • Network Stable</p>
+            <HeroSection />
+            <div className="fixed bottom-8 right-8 z-50">
               <button 
                 onClick={() => setIsEntering(false)} 
-                className="mt-12 text-primary/60 hover:text-primary transition-colors tracking-[0.4em] text-[10px] uppercase border-b border-primary/20 pb-2"
+                className="text-primary/40 hover:text-primary transition-colors tracking-[0.4em] text-[10px] uppercase border-b border-primary/20 pb-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full"
               >
                 Terminate Session
               </button>
@@ -101,10 +97,10 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Decorative Corners */}
-      <div className="fixed top-8 left-8 border-l border-t border-white/10 w-8 h-8 pointer-events-none" />
-      <div className="fixed top-8 right-8 border-r border-t border-white/10 w-8 h-8 pointer-events-none" />
-      <div className="fixed bottom-8 left-8 border-l border-b border-white/10 w-8 h-8 pointer-events-none" />
-      <div className="fixed bottom-8 right-8 border-r border-b border-white/10 w-8 h-8 pointer-events-none" />
+      <div className="fixed top-8 left-8 border-l border-t border-white/10 w-8 h-8 pointer-events-none z-40" />
+      <div className="fixed top-8 right-8 border-r border-t border-white/10 w-8 h-8 pointer-events-none z-40" />
+      <div className="fixed bottom-8 left-8 border-l border-b border-white/10 w-8 h-8 pointer-events-none z-40" />
+      <div className="fixed bottom-8 right-8 border-r border-b border-white/10 w-8 h-8 pointer-events-none z-40" />
     </main>
   );
 }
