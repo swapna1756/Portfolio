@@ -12,9 +12,7 @@ import {
   Briefcase, 
   GraduationCap, 
   X,
-  ExternalLink,
   ShieldCheck,
-  Brain,
   Cpu
 } from "lucide-react";
 import Image from "next/image";
@@ -25,20 +23,55 @@ export const ResumeSection = () => {
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
 
   const resumeData = {
-    name: "Tekkala Swapna",
+    name: "TEKKALA SWAPNA",
     title: "Cybersecurity • AI • Innovation",
     specialization: "Cyber Security",
-    cgpa: "8.78",
-    education: "B.Tech in CSE (Cyber Security) - Kalasalingam Academy of Research and Education",
-    skills: ["Python", "Java", "SQL", "Cybersecurity", "IoT", "Machine Learning"],
+    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts.",
+    education: [
+      {
+        degree: "Bachelor of Technology in Computer Science Engineering (Cyber Security)",
+        institution: "Kalasalingam Academy of Research and Education, Tamil Nadu, India",
+        period: "2023 — 2027",
+        metric: "CGPA: 8.78"
+      },
+      {
+        degree: "Board of Intermediate",
+        institution: "Sri Chaitanya Junior College, Andhra Pradesh, India",
+        period: "2021 — 2023",
+        metric: "Percentage: 92%"
+      }
+    ],
+    skills: {
+      languages: ["Python", "Java", "SQL"],
+      core: ["Cybersecurity", "IoT", "Machine Learning Basics"],
+      soft: ["Communication", "Problem Solving", "Team Collaboration"]
+    },
     projects: [
-      { name: "LinkArmor", desc: "AI-Based Phishing Detection Platform" },
-      { name: "AgriPredict", desc: "AI-Based Agricultural Prediction System" },
-      { name: "Wastewater Monitoring", desc: "IoT-Based Water Quality Monitoring" }
+      { 
+        name: "LinkArmor", 
+        period: "Oct 2025 — Dec 2025",
+        desc: "Developed an AI-powered phishing detection and cybersecurity monitoring platform. Built a cybersecurity dashboard with threat analytics and scan history." 
+      },
+      { 
+        name: "AgriPredict", 
+        period: "Jan 2026 — Feb 2026",
+        desc: "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis." 
+      },
+      { 
+        name: "Wastewater Monitoring System", 
+        period: "Jan 2026 — Apr 2026",
+        desc: "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality." 
+      }
     ],
     publications: [
-      "Agricultural Wastewater Quality Monitoring System Using IoT",
-      "LinkArmor – AI-Based Phishing Detection Platform"
+      {
+        title: "Agricultural Wastewater Quality Monitoring System Using IoT",
+        detail: "Acceptance • IJFMR • 2026"
+      },
+      {
+        title: "LinkArmor – AI-Based Phishing Detection Platform",
+        detail: "Accepted • International Conference on Sustainable Smart Computing and Communications • 2025"
+      }
     ]
   };
 
@@ -79,17 +112,15 @@ export const ResumeSection = () => {
             whileHover={{ scale: 1.02 }}
             className="relative w-64 h-80 rounded-[2.5rem] overflow-hidden group shadow-2xl"
           >
-            {/* Glass Frame Border */}
             <div className="absolute inset-0 border border-white/20 rounded-[2.5rem] z-20 pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
             
             {profileImage && (
               <Image 
                 src={profileImage}
-                alt="Swapna Tekkala"
+                alt={resumeData.name}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
-                data-ai-hint="anime character portrait"
               />
             )}
             
@@ -119,7 +150,7 @@ export const ResumeSection = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#FF4DA6]" />
                   <span className="text-primary/80 text-[10px] tracking-[0.3em] font-bold uppercase">
-                    {resumeData.specialization} Specialization
+                    Cyber Security Specialization
                   </span>
                 </div>
               </div>
@@ -127,7 +158,7 @@ export const ResumeSection = () => {
               <div className="flex gap-4">
                 <motion.a
                   href="/Swapna ResumeFinal(2).pdf"
-                  download
+                  download="Swapna_Resume.pdf"
                   whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 77, 166, 0.3)" }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-primary text-primary-foreground px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg"
@@ -146,72 +177,97 @@ export const ResumeSection = () => {
             </div>
 
             {/* Scrollable Preview Area */}
-            <div className="space-y-10 max-h-[450px] overflow-y-auto custom-scrollbar pr-4">
+            <div className="space-y-10 max-h-[500px] overflow-y-auto custom-scrollbar pr-4">
+              {/* Summary */}
+              <section className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-4 h-4 text-primary" />
+                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Summary</span>
+                </div>
+                <p className="text-white/60 text-[11px] leading-relaxed font-light">
+                  {resumeData.summary}
+                </p>
+              </section>
+
               {/* Education */}
               <section className="space-y-4">
                 <div className="flex items-center gap-3">
                   <GraduationCap className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Academic Status</span>
+                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Education</span>
                 </div>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <h4 className="text-white font-medium text-sm mb-2">{resumeData.education}</h4>
-                  <div className="inline-block bg-primary/10 border border-primary/20 px-3 py-1 rounded-full">
-                    <span className="text-primary text-[10px] font-bold tracking-widest">CGPA: {resumeData.cgpa}</span>
-                  </div>
-                </div>
-              </section>
-
-              {/* Skills Grid */}
-              <section className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Cpu className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Neural Core</span>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  {resumeData.skills.map((skill) => (
-                    <div key={skill} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] text-white/60 tracking-widest uppercase hover:border-primary/40 hover:text-white transition-all">
-                      {skill}
+                <div className="space-y-4">
+                  {resumeData.education.map((edu, idx) => (
+                    <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-white font-medium text-sm max-w-[70%]">{edu.degree}</h4>
+                        <span className="text-primary/60 text-[9px] font-bold">{edu.period}</span>
+                      </div>
+                      <p className="text-white/40 text-[10px] mb-3">{edu.institution}</p>
+                      <div className="inline-block bg-primary/10 border border-primary/20 px-3 py-1 rounded-full">
+                        <span className="text-primary text-[10px] font-bold tracking-widest">{edu.metric}</span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </section>
 
-              {/* Projects & Publications */}
-              <div className="grid md:grid-cols-2 gap-8">
-                <section className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Briefcase className="w-4 h-4 text-primary" />
-                    <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Modules</span>
+              {/* Skills */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Cpu className="w-4 h-4 text-primary" />
+                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Neural Core</span>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Languages</p>
+                    <div className="flex flex-wrap gap-2">
+                      {resumeData.skills.languages.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
+                    </div>
                   </div>
-                  <div className="space-y-3">
-                    {resumeData.projects.map((proj) => (
-                      <div key={proj.name} className="p-4 rounded-xl bg-white/5 border border-white/10 group hover:border-primary/30 transition-all">
-                        <h5 className="text-white text-xs font-bold mb-1">{proj.name}</h5>
-                        <p className="text-white/40 text-[9px] uppercase tracking-wider">{proj.desc}</p>
-                      </div>
-                    ))}
+                  <div>
+                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Core Skills</p>
+                    <div className="flex flex-wrap gap-2">
+                      {resumeData.skills.core.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
+                    </div>
                   </div>
-                </section>
+                </div>
+              </section>
 
-                <section className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <ShieldCheck className="w-4 h-4 text-primary" />
-                    <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Verification</span>
-                  </div>
-                  <div className="space-y-3">
-                    {resumeData.publications.map((pub, i) => (
-                      <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/10">
-                        <p className="text-white/60 text-[10px] leading-relaxed italic">"{pub}"</p>
+              {/* Projects */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Briefcase className="w-4 h-4 text-primary" />
+                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Projects</span>
+                </div>
+                <div className="space-y-3">
+                  {resumeData.projects.map((proj) => (
+                    <div key={proj.name} className="p-4 rounded-xl bg-white/5 border border-white/10 group hover:border-primary/30 transition-all">
+                      <div className="flex justify-between items-center mb-1">
+                        <h5 className="text-white text-xs font-bold">{proj.name}</h5>
+                        <span className="text-primary/40 text-[8px] font-mono">{proj.period}</span>
                       </div>
-                    ))}
-                  </div>
-                </section>
-              </div>
+                      <p className="text-white/40 text-[10px] leading-relaxed">{proj.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Publications */}
+              <section className="space-y-4 pb-4">
+                <div className="flex items-center gap-3">
+                  <ShieldCheck className="w-4 h-4 text-primary" />
+                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Publications</span>
+                </div>
+                <div className="space-y-3">
+                  {resumeData.publications.map((pub, i) => (
+                    <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                      <p className="text-white/80 text-[10px] leading-relaxed font-medium mb-1">{pub.title}</p>
+                      <p className="text-primary/40 text-[8px] uppercase tracking-wider">{pub.detail}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
             </div>
-
-            {/* Corner Decorative Elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-secondary/5 blur-3xl pointer-events-none" />
           </div>
         </motion.div>
       </div>
@@ -250,21 +306,11 @@ export const ResumeSection = () => {
               </div>
 
               <div className="flex-1 bg-black/40 flex items-center justify-center p-12">
-                {/* Simulated PDF Preview */}
-                <div className="w-full h-full max-w-4xl bg-white/95 rounded-xl shadow-2xl flex flex-col items-center justify-center text-black/20 p-20 text-center">
-                  <FileText className="w-24 h-24 mb-6" />
-                  <h4 className="text-2xl font-headline font-bold mb-4 text-black/60">Digital Document Interface</h4>
-                  <p className="text-sm max-w-md mb-12">
-                    In a production environment, the actual PDF document "Swapna ResumeFinal(2).pdf" would be rendered here via an iframe or PDF.js.
-                  </p>
-                  <a 
-                    href="/Swapna ResumeFinal(2).pdf" 
-                    target="_blank"
-                    className="bg-black text-white px-12 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black/80 transition-all"
-                  >
-                    Open Document Link
-                  </a>
-                </div>
+                <iframe 
+                  src="/Swapna ResumeFinal(2).pdf" 
+                  className="w-full h-full rounded-xl border border-white/10"
+                  title="Resume PDF"
+                />
               </div>
             </motion.div>
           </motion.div>
