@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from "react";
@@ -27,12 +26,6 @@ const skills = [
   { name: "AI", icon: <Cpu className="w-4 h-4" /> },
   { name: "IoT", icon: <Globe className="w-4 h-4" /> },
   { name: "React", icon: <Code2 className="w-4 h-4" /> }
-];
-
-const projects = [
-  { title: "LinkArmor", desc: "Advanced security shielding for digital links." },
-  { title: "AgriPredict", desc: "AI-driven predictive analysis for crop health." },
-  { title: "Agricultural Wastewater System", desc: "IoT monitoring for sustainable water usage." }
 ];
 
 export const PortfolioDashboard = () => {
@@ -140,27 +133,6 @@ export const PortfolioDashboard = () => {
                   >
                     <span className="text-primary/60 group-hover:text-primary transition-colors">{skill.icon}</span>
                     <span className="text-white/60 text-[11px] font-medium tracking-wider">{skill.name}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
-
-            {/* Projects */}
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-            >
-              <h3 className="text-primary/60 text-[10px] tracking-[0.4em] uppercase font-bold mb-6">Projects</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projects.map((project) => (
-                  <motion.div
-                    key={project.title}
-                    whileHover={{ scale: 1.02 }}
-                    className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/30 transition-all cursor-pointer group"
-                  >
-                    <h4 className="text-white text-xs font-bold tracking-widest uppercase mb-2 group-hover:text-primary transition-colors">{project.title}</h4>
-                    <p className="text-white/30 text-[10px] leading-relaxed">{project.desc}</p>
                   </motion.div>
                 ))}
               </div>
