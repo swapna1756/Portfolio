@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -12,8 +13,6 @@ export default function Home() {
 
   const handleEnter = () => {
     setIsEntering(true);
-    // In a real app, this would route to a main dashboard/hero section
-    // For now, we simulate the transition
     setTimeout(() => {
       window.scrollTo(0, window.innerHeight);
     }, 1200);
@@ -50,51 +49,51 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 1 }}
-              className="flex flex-col items-center mt-12"
+              transition={{ delay: 0.8, duration: 1 }}
+              className="flex flex-col items-center w-full"
             >
               <DynamicTagline />
 
               <motion.button
                 onClick={handleEnter}
                 whileHover={{ 
-                  scale: 1.1,
-                  boxShadow: "0 0 40px rgba(255, 77, 166, 0.3)"
+                  scale: 1.05,
+                  boxShadow: "0 0 40px rgba(255, 77, 166, 0.2)"
                 }}
-                whileTap={{ scale: 0.9, rotate: 1 }}
-                className="mt-16 glass-button px-10 py-4 rounded-full group overflow-hidden"
+                whileTap={{ scale: 0.95 }}
+                className="mt-8 glass-button px-10 py-4 rounded-full group overflow-hidden"
               >
-                <span className="relative z-10 text-white/90 tracking-[0.5em] text-xs font-medium uppercase transition-colors group-hover:text-primary">
-                  Click Enter To Explore
+                <span className="relative z-10 text-white/90 tracking-[0.5em] text-[10px] font-medium uppercase transition-colors group-hover:text-primary">
+                  Initialize Access
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               </motion.button>
               
               <motion.div 
-                className="mt-8 text-[10px] tracking-[0.3em] uppercase text-white/30"
-                animate={{ opacity: [0.3, 0.6, 0.3] }}
-                transition={{ duration: 3, repeat: Infinity }}
+                className="mt-12 text-[9px] tracking-[0.4em] uppercase text-white/20 font-light"
+                animate={{ opacity: [0.2, 0.4, 0.2] }}
+                transition={{ duration: 4, repeat: Infinity }}
               >
-                Designed for the future
+                Secure Terminal v4.0.2
               </motion.div>
             </motion.div>
           </motion.div>
         ) : (
           <motion.div
             key="content"
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
             className="relative z-30 flex items-center justify-center min-h-screen"
           >
-            <div className="text-center">
-              <h2 className="text-6xl font-headline text-white mb-4">Welcome to the inner sanctum.</h2>
-              <p className="text-white/40 tracking-widest uppercase">The journey begins here.</p>
+            <div className="text-center px-6">
+              <h2 className="text-4xl md:text-6xl font-headline text-white mb-6 tracking-tight">System Access Granted</h2>
+              <p className="text-white/40 tracking-[0.3em] uppercase text-xs">Decryption Complete • Network Stable</p>
               <button 
                 onClick={() => setIsEntering(false)} 
-                className="mt-8 text-primary hover:underline underline-offset-8 tracking-widest text-xs uppercase"
+                className="mt-12 text-primary/60 hover:text-primary transition-colors tracking-[0.4em] text-[10px] uppercase border-b border-primary/20 pb-2"
               >
-                Back to intro
+                Terminate Session
               </button>
             </div>
           </motion.div>
@@ -102,10 +101,10 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Decorative Corners */}
-      <div className="fixed top-8 left-8 border-l border-t border-white/10 w-12 h-12 pointer-events-none" />
-      <div className="fixed top-8 right-8 border-r border-t border-white/10 w-12 h-12 pointer-events-none" />
-      <div className="fixed bottom-8 left-8 border-l border-b border-white/10 w-12 h-12 pointer-events-none" />
-      <div className="fixed bottom-8 right-8 border-r border-b border-white/10 w-12 h-12 pointer-events-none" />
+      <div className="fixed top-8 left-8 border-l border-t border-white/10 w-8 h-8 pointer-events-none" />
+      <div className="fixed top-8 right-8 border-r border-t border-white/10 w-8 h-8 pointer-events-none" />
+      <div className="fixed bottom-8 left-8 border-l border-b border-white/10 w-8 h-8 pointer-events-none" />
+      <div className="fixed bottom-8 right-8 border-r border-b border-white/10 w-8 h-8 pointer-events-none" />
     </main>
   );
 }
