@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -9,12 +8,20 @@ import { GlimmerCursor } from "@/components/GlimmerCursor";
 import { DynamicTagline } from "@/components/DynamicTagline";
 import { HeroSection } from "@/components/HeroSection";
 import { PortfolioDashboard } from "@/components/PortfolioDashboard";
+import { TableOfContents } from "@/components/TableOfContents";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
 
   const handleEnter = () => {
     setIsEntering(true);
+  };
+
+  const handleNavigate = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -86,6 +93,8 @@ export default function Home() {
           >
             <HeroSection />
             <PortfolioDashboard onTerminate={() => setIsEntering(false)} />
+            <TableOfContents onNavigate={handleNavigate} />
+            
             <div className="fixed bottom-8 right-8 z-50">
               <button 
                 onClick={() => setIsEntering(false)} 
