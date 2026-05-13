@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from "react";
@@ -14,6 +13,7 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
     { id: "projects", title: "PROJECTS", number: "02" },
     { id: "skills", title: "SKILLS", number: "03" },
     { id: "resume", title: "RESUME", number: "04" },
+    { id: "contact", title: "GET IN TOUCH", number: "05" },
   ];
 
   const container = {
@@ -96,7 +96,7 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
               </div>
               
               {/* Card Title */}
-              <h3 className="text-white text-2xl md:text-3xl font-headline font-extrabold tracking-tight group-hover:text-primary transition-colors">
+              <h3 className="text-white text-xl md:text-2xl font-headline font-extrabold tracking-tight group-hover:text-primary transition-colors">
                 {card.title}
               </h3>
 

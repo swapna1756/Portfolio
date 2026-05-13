@@ -14,6 +14,7 @@ import { CertificatesSection } from "@/components/CertificatesSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { SkillsSection } from "@/components/SkillsSection";
 import { ResumeSection } from "@/components/ResumeSection";
+import { ContactSection } from "@/components/ContactSection";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
@@ -137,6 +138,7 @@ export default function Home() {
             <SkillsSection />
             <ProjectsSection />
             <ResumeSection />
+            <ContactSection />
             
             <div className="fixed bottom-8 right-8 z-50">
               <button 
