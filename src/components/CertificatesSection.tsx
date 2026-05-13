@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2, Edit3, Camera } from "lucide-react";
+import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2, Camera } from "lucide-react";
 import Image from "next/image";
 
 interface Certificate {
@@ -60,7 +60,7 @@ const DEFAULT_CERTS: Certificate[] = [
 ];
 
 export const CertificatesSection = () => {
-  const [certs, setCerts] = useState<Certificate[]>(DEFAULT_CERTS);
+  const [certs, setCerts] = useState<Certificate[]>([]);
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -77,7 +77,10 @@ export const CertificatesSection = () => {
         setCerts(JSON.parse(saved));
       } catch (e) {
         console.error("Failed to load certificates", e);
+        setCerts(DEFAULT_CERTS);
       }
+    } else {
+      setCerts(DEFAULT_CERTS);
     }
     setIsLoaded(true);
   }, []);
@@ -96,12 +99,14 @@ export const CertificatesSection = () => {
   const handleCloseModal = () => setSelectedCert(null);
 
   const handlePrev = () => {
+    if (certs.length === 0) return;
     const nextIndex = (currentIndex - 1 + certs.length) % certs.length;
     setCurrentIndex(nextIndex);
     setSelectedCert(certs[nextIndex]);
   };
 
   const handleNext = () => {
+    if (certs.length === 0) return;
     const nextIndex = (currentIndex + 1) % certs.length;
     setCurrentIndex(nextIndex);
     setSelectedCert(certs[nextIndex]);
@@ -145,6 +150,10 @@ export const CertificatesSection = () => {
             : c
         ));
         setReplacingId(null);
+        // If the selected cert is the one being replaced, update the modal view too
+        if (selectedCert?.id === replacingId) {
+          setSelectedCert(prev => prev ? { ...prev, imageUrl: isPdf ? "" : reader.result as string, isPdf } : null);
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -156,15 +165,19 @@ export const CertificatesSection = () => {
     replaceInputRef.current?.click();
   };
 
-  const removeCert = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (confirm("Remove this certificate?")) {
-      setCerts(prev => prev.filter(c => c.id !== id));
+  const removeCert = (id: string, e: React.MouseEvent | React.KeyboardEvent) => {
+    if ('stopPropagation' in e) e.stopPropagation();
+    if (confirm("Are you sure you want to delete this certificate? This action cannot be undone.")) {
+      const updatedCerts = certs.filter(c => c.id !== id);
+      setCerts(updatedCerts);
+      if (selectedCert?.id === id) {
+        handleCloseModal();
+      }
     }
   };
 
   const resetToDefaults = () => {
-    if (confirm("Are you sure you want to reset all certificates to default?")) {
+    if (confirm("Reset all certificates to original default view? All custom uploads will be lost.")) {
       setCerts(DEFAULT_CERTS);
       localStorage.removeItem('portfolio_certs');
     }
@@ -217,14 +230,14 @@ export const CertificatesSection = () => {
             MY <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>CERTIFICATES</span>
           </h2>
           <p className="text-white/40 text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
-            Click any certificate to replace the image or upload new ones.
+            Personalize your gallery. Hover to replace images or delete entries.
           </p>
           
           <button 
             onClick={resetToDefaults}
             className="mt-8 text-white/20 hover:text-primary/60 transition-colors text-[9px] uppercase tracking-[0.3em]"
           >
-            Reset to defaults
+            Restore Default View
           </button>
         </motion.div>
 
@@ -264,7 +277,7 @@ export const CertificatesSection = () => {
             </div>
             <h3 className="text-white text-xl font-headline font-bold mb-2">Upload New</h3>
             <p className="text-white/40 text-xs tracking-widest uppercase text-center max-w-[200px]">
-              Drag & drop or click to add your own certificates
+              Drag & drop or click to add your achievements
             </p>
           </motion.div>
 
@@ -283,7 +296,7 @@ export const CertificatesSection = () => {
                 {cert.isPdf ? (
                   <div className="w-full h-full flex flex-col items-center justify-center gap-4 bg-white/5">
                     <FileText className="w-12 h-12 text-primary/40" />
-                    <span className="text-[10px] text-white/40 tracking-[0.2em] uppercase">PDF Certificate</span>
+                    <span className="text-[10px] text-white/40 tracking-[0.2em] uppercase">PDF Document View</span>
                   </div>
                 ) : (
                   <Image
@@ -295,27 +308,30 @@ export const CertificatesSection = () => {
                   />
                 )}
                 
-                {/* Cinematic Hover Overlay for Replacement */}
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-[2px]">
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 backdrop-blur-[2px]">
                   <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={(e) => triggerReplace(cert.id, e)}
-                    className="glass-button p-4 rounded-2xl flex flex-col items-center gap-2 border-primary/30 mb-4"
+                    className="glass-button w-3/4 py-3 rounded-xl flex items-center justify-center gap-2 border-primary/30 mb-3"
                   >
-                    <Camera className="w-6 h-6 text-primary" />
-                    <span className="text-[9px] tracking-[0.3em] uppercase font-bold text-white">Change Image</span>
+                    <Camera className="w-4 h-4 text-primary" />
+                    <span className="text-[9px] tracking-[0.3em] uppercase font-bold text-white">Replace File</span>
                   </motion.button>
-                  <div className="flex gap-2">
+                  
+                  <div className="flex gap-3">
                     <button
                       onClick={() => handleOpenModal(cert, index)}
                       className="p-3 rounded-full bg-white/10 hover:bg-primary/20 text-white transition-colors border border-white/10"
+                      title="View Fullscreen"
                     >
                       <ZoomIn className="w-4 h-4" />
                     </button>
                     <button
                       onClick={(e) => removeCert(cert.id, e)}
                       className="p-3 rounded-full bg-white/10 hover:bg-red-500/20 text-red-400 transition-colors border border-white/10"
+                      title="Delete Certificate"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -348,7 +364,7 @@ export const CertificatesSection = () => {
                   {cert.imageUrl && !cert.isPdf && (
                     <a 
                       href={cert.imageUrl} 
-                      download={cert.title}
+                      download={`${cert.title}.png`}
                       className="p-2 text-white/40 hover:text-primary transition-colors"
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -434,14 +450,14 @@ export const CertificatesSection = () => {
                       {selectedCert.title}
                     </p>
                   </div>
-                  <div className="flex items-center gap-6 pt-8">
+                  <div className="flex items-center gap-6">
                     <div className="flex flex-col">
                       <span className="text-white/20 text-[9px] tracking-[0.4em] uppercase font-bold mb-1">Date</span>
                       <span className="text-white text-sm font-medium">{selectedCert.date}</span>
                     </div>
                   </div>
                   
-                  <div className="pt-12 flex flex-col gap-4">
+                  <div className="pt-8 flex flex-col gap-4">
                     <button 
                       onClick={(e) => triggerReplace(selectedCert.id, e as any)}
                       className="w-full glass-button py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold text-primary flex items-center justify-center gap-3"
@@ -451,12 +467,18 @@ export const CertificatesSection = () => {
                     {selectedCert.imageUrl && !selectedCert.isPdf && (
                       <a 
                         href={selectedCert.imageUrl} 
-                        download={selectedCert.title}
-                        className="w-full bg-primary text-primary-foreground py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold shadow-[0_0_30px_rgba(255,77,166,0.2)] flex items-center justify-center gap-3"
+                        download={`${selectedCert.title}.png`}
+                        className="w-full bg-white/10 hover:bg-white/20 text-white py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold flex items-center justify-center gap-3 transition-colors"
                       >
-                        <Download className="w-4 h-4" /> Save Certificate
+                        <Download className="w-4 h-4" /> Save Copy
                       </a>
                     )}
+                    <button 
+                      onClick={(e) => removeCert(selectedCert.id, e as any)}
+                      className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold flex items-center justify-center gap-3 transition-colors border border-red-500/20"
+                    >
+                      <Trash2 className="w-4 h-4" /> Delete Certificate
+                    </button>
                   </div>
                 </div>
               </div>
