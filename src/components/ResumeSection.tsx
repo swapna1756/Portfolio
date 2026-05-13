@@ -20,13 +20,28 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export const ResumeSection = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
+
+  const handleDownload = () => {
+    setIsDownloading(true);
+    // Simulate a brief shimmer before download starts
+    setTimeout(() => {
+      setIsDownloading(false);
+      const link = document.createElement('a');
+      link.href = '/Swapna ResumeFinal(2).pdf';
+      link.download = 'Swapna_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }, 800);
+  };
 
   const resumeData = {
     name: "TEKKALA SWAPNA",
     title: "Cybersecurity • AI • Innovation",
     specialization: "Cyber Security",
-    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts.",
+    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts. Implemented projects such as phishing detection system and smart agricultural monitoring system.",
     education: [
       {
         degree: "Bachelor of Technology in Computer Science Engineering (Cyber Security)",
@@ -58,9 +73,9 @@ export const ResumeSection = () => {
         desc: "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis." 
       },
       { 
-        name: "Wastewater Monitoring System", 
+        name: "Agricultural Wastewater Quality Monitoring", 
         period: "Jan 2026 — Apr 2026",
-        desc: "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality." 
+        desc: "Built a monitoring system based on IoT and ESP32 that can continuously measure water quality using pH, TDS, and turbidity sensors." 
       }
     ],
     publications: [
@@ -156,15 +171,23 @@ export const ResumeSection = () => {
               </div>
               
               <div className="flex gap-4">
-                <motion.a
-                  href="/Swapna ResumeFinal(2).pdf"
-                  download="Swapna_Resume.pdf"
+                <motion.button
+                  onClick={handleDownload}
                   whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 77, 166, 0.3)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-primary text-primary-foreground px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg"
+                  className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg"
                 >
-                  <Download className="w-3 h-3" /> Download
-                </motion.a>
+                  <Download className="w-3 h-3" /> 
+                  <span>{isDownloading ? "Initializing..." : "Download"}</span>
+                  {isDownloading && (
+                    <motion.div 
+                      layoutId="shimmer"
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      animate={{ x: ['-100%', '100%'] }}
+                      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                    />
+                  )}
+                </motion.button>
                 <motion.button
                   onClick={() => setIsPreviewOpen(true)}
                   whileHover={{ scale: 1.05, background: "rgba(255, 255, 255, 0.1)" }}
