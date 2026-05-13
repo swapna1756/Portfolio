@@ -16,21 +16,9 @@ import {
   Database, 
   Globe,
   Binary,
-  Camera,
-  Award,
-  Layers
+  Camera
 } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-
-const skills = [
-  { name: "Python", icon: <Binary className="w-4 h-4" /> },
-  { name: "Java", icon: <Code2 className="w-4 h-4" /> },
-  { name: "SQL", icon: <Database className="w-4 h-4" /> },
-  { name: "Cybersecurity", icon: <ShieldCheck className="w-4 h-4" /> },
-  { name: "AI", icon: <Cpu className="w-4 h-4" /> },
-  { name: "IoT", icon: <Globe className="w-4 h-4" /> },
-  { name: "React", icon: <Code2 className="w-4 h-4" /> }
-];
 
 interface PortfolioDashboardProps {
   onTerminate?: () => void;
@@ -249,30 +237,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
                 <div className="inline-block bg-primary/10 border border-primary/20 px-3 py-1 rounded-full">
                   <p className="text-primary text-[10px] font-bold tracking-widest uppercase">CGPA: 8.78</p>
                 </div>
-              </div>
-            </motion.section>
-
-            <motion.section
-              id="skills"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-primary/60 text-[10px] tracking-[0.4em] uppercase font-bold">Skills</h3>
-                <div className="flex-1 h-[1px] bg-white/5" />
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {skills.map((skill) => (
-                  <motion.div
-                    key={skill.name}
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 77, 166, 0.15)" }}
-                    className="bg-white/5 border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3"
-                  >
-                    <span className="text-primary/60">{skill.icon}</span>
-                    <span className="text-white/80 text-[11px] font-medium tracking-widest uppercase">{skill.name}</span>
-                  </motion.div>
-                ))}
               </div>
             </motion.section>
           </div>
