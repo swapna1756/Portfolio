@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2, Edit3, Image as ImageIcon } from "lucide-react";
+import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2, Edit3 } from "lucide-react";
 import Image from "next/image";
 
 interface Certificate {
@@ -14,7 +14,7 @@ interface Certificate {
   isPdf?: boolean;
 }
 
-const initialCertificates: Certificate[] = [
+const DEFAULT_CERTS: Certificate[] = [
   {
     id: "1",
     title: "Introduction to Cyber Security",
@@ -67,13 +67,35 @@ const initialCertificates: Certificate[] = [
 ];
 
 export const CertificatesSection = () => {
-  const [certs, setCerts] = useState<Certificate[]>(initialCertificates);
+  const [certs, setCerts] = useState<Certificate[]>(DEFAULT_CERTS);
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   const replaceInputRef = useRef<HTMLInputElement>(null);
   const [replacingId, setReplacingId] = useState<string | null>(null);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('portfolio_certs');
+    if (saved) {
+      try {
+        setCerts(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load certificates", e);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save to localStorage whenever certs change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('portfolio_certs', JSON.stringify(certs));
+    }
+  }, [certs, isLoaded]);
 
   const handleOpenModal = (cert: Certificate, index: number) => {
     setSelectedCert(cert);
@@ -127,8 +149,7 @@ export const CertificatesSection = () => {
             ? { 
                 ...c, 
                 imageUrl: isPdf ? "" : reader.result as string, 
-                isPdf,
-                title: file.name.split('.')[0] 
+                isPdf
               } 
             : c
         ));
@@ -149,6 +170,13 @@ export const CertificatesSection = () => {
     setCerts(prev => prev.filter(c => c.id !== id));
   };
 
+  const resetToDefaults = () => {
+    if (confirm("Are you sure you want to reset all certificates to default?")) {
+      setCerts(DEFAULT_CERTS);
+      localStorage.removeItem('portfolio_certs');
+    }
+  };
+
   const onDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -167,6 +195,8 @@ export const CertificatesSection = () => {
       handleFileUpload(simulatedEvent);
     }
   };
+
+  if (!isLoaded) return null;
 
   return (
     <section id="certificates" className="relative min-h-screen py-32 px-6 md:px-12 overflow-hidden bg-black/20">
@@ -193,9 +223,16 @@ export const CertificatesSection = () => {
           <h2 className="text-5xl md:text-7xl font-headline font-extrabold text-white mb-6 tracking-tighter uppercase">
             MY <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>CERTIFICATES</span>
           </h2>
-          <p className="text-white/40 text-sm tracking-[0.2em] uppercase font-light">
-            Professional Learning & Achievements
+          <p className="text-white/40 text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
+            Professional Learning & Achievements. You can upload or replace any certificate with your own.
           </p>
+          
+          <button 
+            onClick={resetToDefaults}
+            className="mt-8 text-white/20 hover:text-primary/60 transition-colors text-[9px] uppercase tracking-[0.3em]"
+          >
+            Reset to defaults
+          </button>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -259,24 +296,25 @@ export const CertificatesSection = () => {
                     alt={cert.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
-                    data-ai-hint="certificate preview"
+                    data-ai-hint="certificate"
                   />
                 )}
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                <div className="absolute top-4 right-4 flex gap-2">
+                {/* Action Buttons Overlay */}
+                <div className="absolute top-4 right-4 flex gap-2 z-20">
                   <button
                     onClick={(e) => triggerReplace(cert.id, e)}
-                    title="Replace with your own"
-                    className="p-2 rounded-full bg-primary/20 text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/40"
+                    title="Replace with your own image"
+                    className="p-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-primary opacity-0 group-hover:opacity-100 transition-all hover:bg-primary hover:text-white"
                   >
                     <Edit3 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={(e) => removeCert(cert.id, e)}
-                    title="Remove"
-                    className="p-2 rounded-full bg-red-500/20 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/40"
+                    title="Remove Certificate"
+                    className="p-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-red-400 opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -284,7 +322,7 @@ export const CertificatesSection = () => {
 
                 <button
                   onClick={() => handleOpenModal(cert, index)}
-                  className="absolute bottom-4 right-4 bg-primary text-primary-foreground p-3 rounded-full translate-y-12 group-hover:translate-y-0 transition-transform duration-300 shadow-[0_0_20px_#FF4DA6]"
+                  className="absolute bottom-4 right-4 bg-primary text-primary-foreground p-3 rounded-full translate-y-12 group-hover:translate-y-0 transition-transform duration-300 shadow-[0_0_20px_#FF4DA6] z-20"
                 >
                   <ZoomIn className="w-4 h-4" />
                 </button>
@@ -406,6 +444,12 @@ export const CertificatesSection = () => {
                   </div>
                   
                   <div className="pt-12 flex flex-col gap-4">
+                    <button 
+                      onClick={(e) => triggerReplace(selectedCert.id, e as any)}
+                      className="w-full glass-button py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold text-primary flex items-center justify-center gap-3"
+                    >
+                      <Edit3 className="w-4 h-4" /> Replace Image
+                    </button>
                     {selectedCert.imageUrl && !selectedCert.isPdf && (
                       <a 
                         href={selectedCert.imageUrl} 
