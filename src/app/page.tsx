@@ -9,6 +9,7 @@ import { DynamicTagline } from "@/components/DynamicTagline";
 import { HeroSection } from "@/components/HeroSection";
 import { PortfolioDashboard } from "@/components/PortfolioDashboard";
 import { TableOfContents } from "@/components/TableOfContents";
+import { CertificatesSection } from "@/components/CertificatesSection";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
@@ -94,6 +95,7 @@ export default function Home() {
             <HeroSection />
             <PortfolioDashboard onTerminate={() => setIsEntering(false)} />
             <TableOfContents onNavigate={handleNavigate} />
+            <CertificatesSection />
             
             <div className="fixed bottom-8 right-8 z-50">
               <button 
