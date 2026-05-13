@@ -106,7 +106,7 @@ export const CertificatesSection = () => {
             title: file.name.split('.')[0],
             issuer: "New Achievement",
             date: new Date().getFullYear().toString(),
-            imageUrl: isPdf ? "/pdf-placeholder.png" : reader.result as string,
+            imageUrl: isPdf ? "" : reader.result as string,
             isPdf: isPdf
           };
           setCerts(prev => [newCert, ...prev]);
@@ -124,7 +124,12 @@ export const CertificatesSection = () => {
       reader.onloadend = () => {
         setCerts(prev => prev.map(c => 
           c.id === replacingId 
-            ? { ...c, imageUrl: isPdf ? "/pdf-placeholder.png" : reader.result as string, isPdf } 
+            ? { 
+                ...c, 
+                imageUrl: isPdf ? "" : reader.result as string, 
+                isPdf,
+                title: file.name.split('.')[0] 
+              } 
             : c
         ));
         setReplacingId(null);
@@ -246,7 +251,7 @@ export const CertificatesSection = () => {
                 {cert.isPdf ? (
                   <div className="w-full h-full flex flex-col items-center justify-center gap-4 bg-white/5">
                     <FileText className="w-12 h-12 text-primary/40" />
-                    <span className="text-[10px] text-white/40 tracking-[0.2em] uppercase">PDF View</span>
+                    <span className="text-[10px] text-white/40 tracking-[0.2em] uppercase">PDF Certificate</span>
                   </div>
                 ) : (
                   <Image
@@ -263,7 +268,7 @@ export const CertificatesSection = () => {
                 <div className="absolute top-4 right-4 flex gap-2">
                   <button
                     onClick={(e) => triggerReplace(cert.id, e)}
-                    title="Replace Image"
+                    title="Replace with your own"
                     className="p-2 rounded-full bg-primary/20 text-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/40"
                   >
                     <Edit3 className="w-4 h-4" />
@@ -305,13 +310,15 @@ export const CertificatesSection = () => {
                   >
                     <ExternalLink className="w-4 h-4" />
                   </button>
-                  <a 
-                    href={cert.imageUrl} 
-                    download={cert.title}
-                    className="p-2 text-white/40 hover:text-primary transition-colors"
-                  >
-                    <Download className="w-4 h-4" />
-                  </a>
+                  {cert.imageUrl && !cert.isPdf && (
+                    <a 
+                      href={cert.imageUrl} 
+                      download={cert.title}
+                      className="p-2 text-white/40 hover:text-primary transition-colors"
+                    >
+                      <Download className="w-4 h-4" />
+                    </a>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -344,7 +351,7 @@ export const CertificatesSection = () => {
                 {selectedCert.isPdf ? (
                   <div className="flex flex-col items-center gap-6">
                     <FileText className="w-32 h-32 text-primary" />
-                    <p className="text-white text-center text-xl font-light">PDF Preview</p>
+                    <p className="text-white text-center text-xl font-light">PDF Document View</p>
                     <a 
                       href={selectedCert.imageUrl} 
                       target="_blank" 
@@ -399,13 +406,15 @@ export const CertificatesSection = () => {
                   </div>
                   
                   <div className="pt-12 flex flex-col gap-4">
-                    <a 
-                      href={selectedCert.imageUrl} 
-                      download={selectedCert.title}
-                      className="w-full bg-primary text-primary-foreground py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold shadow-[0_0_30px_rgba(255,77,166,0.2)] flex items-center justify-center gap-3"
-                    >
-                      <Download className="w-4 h-4" /> Save Certificate
-                    </a>
+                    {selectedCert.imageUrl && !selectedCert.isPdf && (
+                      <a 
+                        href={selectedCert.imageUrl} 
+                        download={selectedCert.title}
+                        className="w-full bg-primary text-primary-foreground py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold shadow-[0_0_30px_rgba(255,77,166,0.2)] flex items-center justify-center gap-3"
+                      >
+                        <Download className="w-4 h-4" /> Save Certificate
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
