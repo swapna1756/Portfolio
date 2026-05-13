@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 interface Certificate {
@@ -11,10 +11,10 @@ interface Certificate {
   issuer: string;
   date: string;
   imageUrl: string;
-  description?: string;
+  isPdf?: boolean;
 }
 
-const certificates: Certificate[] = [
+const initialCertificates: Certificate[] = [
   {
     id: "1",
     title: "Introduction to Cyber Security",
@@ -67,8 +67,11 @@ const certificates: Certificate[] = [
 ];
 
 export const CertificatesSection = () => {
+  const [certs, setCerts] = useState<Certificate[]>(initialCertificates);
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleOpenModal = (cert: Certificate, index: number) => {
     setSelectedCert(cert);
@@ -78,27 +81,72 @@ export const CertificatesSection = () => {
   const handleCloseModal = () => setSelectedCert(null);
 
   const handlePrev = () => {
-    const nextIndex = (currentIndex - 1 + certificates.length) % certificates.length;
+    const nextIndex = (currentIndex - 1 + certs.length) % certs.length;
     setCurrentIndex(nextIndex);
-    setSelectedCert(certificates[nextIndex]);
+    setSelectedCert(certs[nextIndex]);
   };
 
   const handleNext = () => {
-    const nextIndex = (currentIndex + 1) % certificates.length;
+    const nextIndex = (currentIndex + 1) % certs.length;
     setCurrentIndex(nextIndex);
-    setSelectedCert(certificates[nextIndex]);
+    setSelectedCert(certs[nextIndex]);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      Array.from(files).forEach(file => {
+        const isPdf = file.type === 'application/pdf';
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const newCert: Certificate = {
+            id: Math.random().toString(36).substr(2, 9),
+            title: file.name.split('.')[0],
+            issuer: "Self Uploaded",
+            date: new Date().getFullYear().toString(),
+            imageUrl: isPdf ? "/pdf-placeholder.png" : reader.result as string, // Realistically would use a PDF icon if PDF
+            isPdf: isPdf
+          };
+          setCerts(prev => [newCert, ...prev]);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const removeCert = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCerts(prev => prev.filter(c => c.id !== id));
+  };
+
+  const onDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const onDragLeave = () => setIsDragging(false);
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files) {
+      // Create a simulated change event to reuse handleFileUpload
+      const simulatedEvent = {
+        target: { files }
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      handleFileUpload(simulatedEvent);
+    }
   };
 
   return (
     <section id="certificates" className="relative min-h-screen py-32 px-6 md:px-12 overflow-hidden bg-black/20">
-      {/* Background Decorative Glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full" />
         <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -121,30 +169,77 @@ export const CertificatesSection = () => {
           </p>
         </motion.div>
 
-        {/* Certificates Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {certificates.map((cert, index) => (
+          {/* Upload Card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onClick={() => fileInputRef.current?.click()}
+            className={`group relative glass-button p-8 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center cursor-pointer min-h-[400px] ${
+              isDragging ? "border-primary bg-primary/10" : "border-white/10 bg-white/5 hover:border-primary/50 hover:bg-white/10"
+            }`}
+          >
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleFileUpload} 
+              multiple 
+              className="hidden" 
+              accept="image/*,application/pdf"
+            />
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Plus className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="text-white text-xl font-headline font-bold mb-2">Add Certificate</h3>
+            <p className="text-white/40 text-xs tracking-widest uppercase text-center max-w-[200px]">
+              Drag & drop or click to upload (Image/PDF)
+            </p>
+            <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          </motion.div>
+
+          {certs.map((cert, index) => (
             <motion.div
               key={cert.id}
+              layout
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
               whileHover={{ y: -10 }}
               className="group relative glass-button p-4 rounded-[2rem] border border-white/10 flex flex-col h-full overflow-hidden"
             >
               {/* Image Preview */}
               <div className="relative aspect-[4/3] rounded-[1.5rem] overflow-hidden mb-6 bg-black/40">
-                <Image
-                  src={cert.imageUrl}
-                  alt={cert.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
-                  data-ai-hint="certificate document preview"
-                />
+                {cert.isPdf ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-4 bg-white/5">
+                    <FileText className="w-12 h-12 text-primary/40" />
+                    <span className="text-[10px] text-white/40 tracking-[0.2em] uppercase">PDF Document</span>
+                  </div>
+                ) : (
+                  <Image
+                    src={cert.imageUrl}
+                    alt={cert.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
+                    data-ai-hint="certificate preview"
+                  />
+                )}
+                
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                {/* Quick View Button */}
+                <div className="absolute top-4 right-4 flex gap-2">
+                   <button
+                    onClick={(e) => removeCert(cert.id, e)}
+                    className="p-2 rounded-full bg-red-500/20 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/40"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+
                 <button
                   onClick={() => handleOpenModal(cert, index)}
                   className="absolute bottom-4 right-4 bg-primary text-primary-foreground p-3 rounded-full translate-y-12 group-hover:translate-y-0 transition-transform duration-300 shadow-[0_0_20px_#FF4DA6]"
@@ -158,7 +253,7 @@ export const CertificatesSection = () => {
                 <div className="text-primary/60 text-[9px] tracking-[0.4em] font-bold mb-2 uppercase">
                   {cert.issuer}
                 </div>
-                <h3 className="text-white text-lg font-headline font-bold leading-tight mb-4 group-hover:text-primary transition-colors">
+                <h3 className="text-white text-lg font-headline font-bold leading-tight mb-4 group-hover:text-primary transition-colors line-clamp-2">
                   {cert.title}
                 </h3>
               </div>
@@ -175,20 +270,22 @@ export const CertificatesSection = () => {
                   >
                     <ExternalLink className="w-4 h-4" />
                   </button>
-                  <button className="p-2 text-white/40 hover:text-primary transition-colors">
+                  <a 
+                    href={cert.imageUrl} 
+                    download={cert.title}
+                    className="p-2 text-white/40 hover:text-primary transition-colors"
+                  >
                     <Download className="w-4 h-4" />
-                  </button>
+                  </a>
                 </div>
               </div>
 
-              {/* Decorative Corner Glow */}
               <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 blur-2xl group-hover:bg-primary/20 transition-all rounded-full" />
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Fullscreen Lightbox Modal */}
       <AnimatePresence>
         {selectedCert && (
           <motion.div
@@ -203,7 +300,6 @@ export const CertificatesSection = () => {
               exit={{ scale: 0.9, y: 20 }}
               className="relative w-full max-w-6xl aspect-[16/10] bg-white/[0.03] border border-white/10 rounded-[3rem] overflow-hidden flex flex-col md:flex-row shadow-[0_50px_100px_rgba(0,0,0,0.8)]"
             >
-              {/* Close Button */}
               <button
                 onClick={handleCloseModal}
                 className="absolute top-8 right-8 z-50 p-4 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all"
@@ -211,16 +307,29 @@ export const CertificatesSection = () => {
                 <X className="w-6 h-6" />
               </button>
 
-              {/* Modal Content */}
-              <div className="w-full md:w-2/3 relative bg-black/40 h-full flex items-center justify-center">
-                <Image
-                  src={selectedCert.imageUrl}
-                  alt={selectedCert.title}
-                  fill
-                  className="object-contain p-8 md:p-16"
-                />
+              <div className="w-full md:w-2/3 relative bg-black/40 h-full flex items-center justify-center p-8">
+                {selectedCert.isPdf ? (
+                  <div className="flex flex-col items-center gap-6">
+                    <FileText className="w-32 h-32 text-primary" />
+                    <p className="text-white text-center text-xl font-light">PDF Document View Pending Integration</p>
+                    <a 
+                      href={selectedCert.imageUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="glass-button px-8 py-3 rounded-full text-[10px] tracking-[0.3em] uppercase text-primary font-bold"
+                    >
+                      Open PDF in New Tab
+                    </a>
+                  </div>
+                ) : (
+                  <Image
+                    src={selectedCert.imageUrl}
+                    alt={selectedCert.title}
+                    fill
+                    className="object-contain p-4 md:p-12"
+                  />
+                )}
                 
-                {/* Navigation Controls */}
                 <button
                   onClick={handlePrev}
                   className="absolute left-6 p-4 rounded-full bg-black/40 border border-white/5 text-white/40 hover:text-primary hover:border-primary/50 transition-all"
@@ -235,7 +344,6 @@ export const CertificatesSection = () => {
                 </button>
               </div>
 
-              {/* Sidebar Info */}
               <div className="flex-1 p-12 flex flex-col justify-center bg-black/20 border-l border-white/5">
                 <div className="space-y-8">
                   <div>
@@ -258,9 +366,13 @@ export const CertificatesSection = () => {
                   </div>
                   
                   <div className="pt-12 flex flex-col gap-4">
-                    <button className="w-full bg-primary text-primary-foreground py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold shadow-[0_0_30px_rgba(255,77,166,0.2)] hover:shadow-[0_0_50px_rgba(255,77,166,0.4)] transition-all flex items-center justify-center gap-3">
+                    <a 
+                      href={selectedCert.imageUrl} 
+                      download={selectedCert.title}
+                      className="w-full bg-primary text-primary-foreground py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold shadow-[0_0_30px_rgba(255,77,166,0.2)] hover:shadow-[0_0_50px_rgba(255,77,166,0.4)] transition-all flex items-center justify-center gap-3"
+                    >
                       <Download className="w-4 h-4" /> Download Credential
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
