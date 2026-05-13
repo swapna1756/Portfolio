@@ -13,7 +13,11 @@ import {
   GraduationCap, 
   X,
   ShieldCheck,
-  Cpu
+  Cpu,
+  Mail,
+  Phone,
+  Linkedin,
+  Github
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -25,7 +29,6 @@ export const ResumeSection = () => {
 
   const handleDownload = () => {
     setIsDownloading(true);
-    // Simulate a brief shimmer before download starts
     setTimeout(() => {
       setIsDownloading(false);
       const link = document.createElement('a');
@@ -40,8 +43,13 @@ export const ResumeSection = () => {
   const resumeData = {
     name: "TEKKALA SWAPNA",
     title: "Cybersecurity • AI • Innovation",
-    specialization: "Cyber Security",
-    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts. Implemented projects such as phishing detection system and smart agricultural monitoring system.",
+    contact: {
+      phone: "+91-9346798175",
+      email: "swapnatekkala1756@gmail.com",
+      linkedin: "linkedin.com/in/tekkala-swapna-8624663a0",
+      github: "github.com/swapna1756"
+    },
+    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts. Implemented projects such as phishing detection system and smart agricultural monitoring system. Interpersonal, analytical, problem solving and team working skills, with an interest in cyber security and emerging technologies.",
     education: [
       {
         degree: "Bachelor of Technology in Computer Science Engineering (Cyber Security)",
@@ -65,17 +73,19 @@ export const ResumeSection = () => {
       { 
         name: "LinkArmor", 
         period: "Oct 2025 — Dec 2025",
-        desc: "Developed an AI-powered phishing detection and cybersecurity monitoring platform. Built a cybersecurity dashboard with threat analytics and scan history." 
+        link: "link-armor.vercel.app",
+        desc: "Developed an AI-powered phishing detection and cybersecurity monitoring platform. Built a cybersecurity dashboard with threat analytics and scan history. Designed frontend and backend modules using React, Node.js, and MongoDB. Implemented URL threat scoring, SSL verification, and domain inspection features." 
       },
       { 
         name: "AgriPredict", 
         period: "Jan 2026 — Feb 2026",
-        desc: "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis." 
+        link: "agripredictf.vercel.app",
+        desc: "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis. Built machine learning modules for crop prediction, agricultural monitoring, and data-driven decision-making. Engineered scalable data pipelines. Deployed the application on Vercel to enhance accessibility and performance." 
       },
       { 
         name: "Agricultural Wastewater Quality Monitoring", 
         period: "Jan 2026 — Apr 2026",
-        desc: "Built a monitoring system based on IoT and ESP32 that can continuously measure water quality using pH, TDS, and turbidity sensors." 
+        desc: "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality. Accurate real-time environmental monitoring with pH, TDS, turbidity and temperature sensors. Arduino IDE and C/C++ based programmed sensor data processing and alarm generation. Created a secure cloud-based data storage and retrieval system." 
       }
     ],
     publications: [
@@ -128,7 +138,7 @@ export const ResumeSection = () => {
             className="relative w-64 h-80 rounded-[2.5rem] overflow-hidden group shadow-2xl"
           >
             <div className="absolute inset-0 border border-white/20 rounded-[2.5rem] z-20 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-background/40 to-transparent z-10" />
             
             {profileImage && (
               <Image 
@@ -162,11 +172,15 @@ export const ResumeSection = () => {
                 <h3 className="text-3xl font-headline font-extrabold text-white mb-1 uppercase tracking-tight">
                   {resumeData.name}
                 </h3>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#FF4DA6]" />
-                  <span className="text-primary/80 text-[10px] tracking-[0.3em] font-bold uppercase">
-                    Cyber Security Specialization
-                  </span>
+                <div className="flex flex-col gap-2 mt-4">
+                  <div className="flex items-center gap-3">
+                    <Mail className="w-3 h-3 text-primary" />
+                    <span className="text-white/60 text-[10px] tracking-widest">{resumeData.contact.email}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Phone className="w-3 h-3 text-primary" />
+                    <span className="text-white/60 text-[10px] tracking-widest">{resumeData.contact.phone}</span>
+                  </div>
                 </div>
               </div>
               
@@ -320,12 +334,20 @@ export const ResumeSection = () => {
                     <p className="text-white/40 text-[9px] uppercase tracking-[0.3em]">Full Document Preview</p>
                   </div>
                 </div>
-                <button 
-                  onClick={() => setIsPreviewOpen(false)}
-                  className="p-4 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white transition-all"
-                >
-                  <X className="w-6 h-6" />
-                </button>
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={handleDownload}
+                    className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest"
+                  >
+                    <Download className="w-4 h-4" /> Download
+                  </button>
+                  <button 
+                    onClick={() => setIsPreviewOpen(false)}
+                    className="p-4 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white transition-all"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
               </div>
 
               <div className="flex-1 bg-black/40 flex items-center justify-center p-12">
