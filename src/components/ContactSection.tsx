@@ -123,8 +123,10 @@ export const ContactSection = () => {
             <span className="text-primary text-[9px] tracking-[0.4em] uppercase font-bold">Terminal Initialization</span>
           </motion.div>
           
-          <h2 className="text-3xl md:text-5xl font-headline font-extrabold text-white mb-4 tracking-tighter leading-tight flex flex-wrap justify-center items-center gap-x-3 md:gap-x-5">
-            <span>LET’S CREATE THE FUTURE TOGETHER</span>
+          <h2 className="text-3xl md:text-5xl font-headline font-extrabold mb-4 tracking-tighter leading-tight flex flex-wrap justify-center items-center gap-x-3 md:gap-x-5 uppercase">
+            <span className="text-white">LET’S CREATE THE</span>
+            <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>FUTURE</span>
+            <span className="text-white">TOGETHER</span>
           </h2>
           <motion.p 
             animate={{ opacity: [0.3, 0.6, 0.3] }}
