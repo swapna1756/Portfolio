@@ -34,43 +34,44 @@ const skills: Skill[] = [
 const SkillOrb = ({ skill, index, total }: { skill: Skill; index: number; total: number }) => {
   // Calculate orbital position
   const angle = (index / total) * Math.PI * 2;
-  const radius = 300; // Radius of the circle in pixels
+  const radius = 300; 
   
-  const x = Math.cos(angle) * radius;
-  const y = Math.sin(angle) * radius;
+  const xTarget = Math.cos(angle) * radius;
+  const yTarget = Math.sin(angle) * radius;
 
   return (
     <motion.div
       initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
       whileInView={{ 
-        x, 
-        y, 
+        x: xTarget, 
+        y: yTarget, 
         opacity: 1, 
         scale: 1,
       }}
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: "-100px" }}
       transition={{ 
         type: "spring", 
-        stiffness: 50, 
-        damping: 15, 
-        delay: index * 0.08 + 0.5 
+        stiffness: 40, 
+        damping: 12, 
+        delay: index * 0.15 + 0.8 // Staggered emergence after central hub appears
       }}
       whileHover={{ scale: 1.15, zIndex: 50 }}
       className="absolute"
     >
-      {/* Connecting Line to Center */}
+      {/* Connecting Line to Center - Emerges with the orb */}
       <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none overflow-visible" width="1" height="1">
         <motion.line
-          x1={-x}
-          y1={-y}
+          x1={-xTarget}
+          y1={-yTarget}
           x2="0"
           y2="0"
           stroke="white"
           strokeOpacity="0.05"
           strokeWidth="1"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: index * 0.1 }}
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, delay: index * 0.15 + 1 }}
         />
       </svg>
 
@@ -163,7 +164,7 @@ export const SkillsSection = () => {
             initial={{ scale: 0, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15 }}
             className="relative z-20 w-48 h-48 md:w-64 md:h-64 rounded-full bg-black/60 backdrop-blur-3xl border border-white/20 flex flex-col items-center justify-center shadow-[0_0_80px_rgba(255,77,166,0.2)]"
           >
             <motion.h2 
@@ -175,15 +176,29 @@ export const SkillsSection = () => {
               <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>SKILLS</span>
             </motion.h2>
             
+            {/* Cinematic Ripple Effect for emergence */}
+            <motion.div 
+              initial={{ scale: 1, opacity: 0 }}
+              whileInView={{ 
+                scale: [1, 1.5],
+                opacity: [0.5, 0]
+              }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+              className="absolute inset-0 rounded-full border-2 border-primary/40 pointer-events-none"
+            />
+            
             <div className="absolute inset-[-20px] rounded-full border border-primary/20 animate-pulse" />
             <div className="absolute inset-[-40px] rounded-full border border-primary/5 animate-pulse" style={{ animationDelay: '1s' }} />
             <div className="absolute inset-0 bg-primary/10 blur-[60px] rounded-full" />
           </motion.div>
 
-          {/* Orbiting Skill Orbs */}
-          <div className="absolute flex items-center justify-center">
+          {/* Orbiting Skill Orbs - These emerge from the center point */}
+          <div className="absolute flex items-center justify-center pointer-events-none">
             {skills.map((skill, index) => (
-              <SkillOrb key={skill.name} skill={skill} index={index} total={skills.length} />
+              <div key={skill.name} className="pointer-events-auto">
+                <SkillOrb skill={skill} index={index} total={skills.length} />
+              </div>
             ))}
           </div>
         </div>
