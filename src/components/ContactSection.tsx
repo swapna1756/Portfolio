@@ -285,6 +285,7 @@ export const ContactSection = () => {
                       <SelectItem value="project">Project Discussion</SelectItem>
                       <SelectItem value="partner">Creative Partnership</SelectItem>
                       <SelectItem value="networking">Tech Networking</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
