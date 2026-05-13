@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from "react";
@@ -82,6 +83,7 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
                 translateY: -5,
                 boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
               }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onNavigate(card.id)}
               className={`
                 relative cursor-pointer group glass-button p-8 rounded-[2rem] border border-white/10

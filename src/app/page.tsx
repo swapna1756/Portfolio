@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BubbleTypography } from "@/components/BubbleTypography";
 import { ButterflyOverlay } from "@/components/ButterflyOverlay";
@@ -15,6 +16,7 @@ import { SkillsSection } from "@/components/SkillsSection";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleEnter = () => {
     setIsEntering(true);
@@ -23,7 +25,15 @@ export default function Home() {
   const handleNavigate = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
+      // Start cinematic transition
+      setIsNavigating(true);
+      
       element.scrollIntoView({ behavior: "smooth" });
+
+      // End transition after scroll mostly completes
+      setTimeout(() => {
+        setIsNavigating(false);
+      }, 800);
     }
   };
 
@@ -32,6 +42,19 @@ export default function Home() {
       <GlimmerCursor />
       <ButterflyOverlay />
       
+      {/* Cinematic Navigation Overlay */}
+      <AnimatePresence>
+        {isNavigating && (
+          <motion.div
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(10px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-[100] pointer-events-none bg-primary/5"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Background Glow Blobs */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] rounded-full bg-primary/10 blur-[120px] animate-pulse-glow" />
