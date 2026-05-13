@@ -17,7 +17,8 @@ import {
   Mail,
   Phone,
   Linkedin,
-  Github
+  Github,
+  Globe
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -26,23 +27,20 @@ export const ResumeSection = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
+  const resumePreviewImage = PlaceHolderImages.find(img => img.id === 'resume-preview')?.imageUrl;
 
   const handleDownload = () => {
     setIsDownloading(true);
     
-    // Simulate a brief preparing phase for cinematic feel
+    // Simulate preparation for cinematic effect
     setTimeout(() => {
       setIsDownloading(false);
-      
-      // Use the exact filename provided: "Swapna ResumeFinal(2).pdf"
       const fileName = "Swapna ResumeFinal(2).pdf";
       const fileUrl = `/${encodeURIComponent(fileName)}`;
       
       const link = document.createElement('a');
       link.href = fileUrl;
       link.setAttribute('download', 'Swapna_Tekkala_Resume.pdf');
-      link.setAttribute('target', '_blank');
-      link.setAttribute('rel', 'noopener noreferrer');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -82,17 +80,32 @@ export const ResumeSection = () => {
       { 
         name: "LinkArmor - link-armor.vercel.app", 
         period: "Oct 2025 — Dec 2025",
-        desc: "Developed an AI-powered phishing detection and cybersecurity monitoring platform. Built a cybersecurity dashboard with threat analytics and scan history. Designed frontend and backend modules using React, Node.js, and MongoDB. Implemented URL threat scoring, SSL verification, and domain inspection features." 
+        desc: [
+          "Developed an AI-powered phishing detection and cybersecurity monitoring platform.",
+          "Built a cybersecurity dashboard with threat analytics and scan history.",
+          "Designed frontend and backend modules using React, Node.js, and MongoDB.",
+          "Implemented URL threat scoring, SSL verification, and domain inspection features."
+        ]
       },
       { 
         name: "AgriPredict - agripredictf.vercel.app", 
         period: "Jan 2026 — Feb 2026",
-        desc: "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis. Built machine learning modules for crop prediction, agricultural monitoring, and data-driven decision-making. Engineered scalable data pipelines and integrated advanced analytics to enable real-time agricultural forecasting, enhancing decision-making capabilities for farmers and stakeholders. Processed and analyzed agricultural data to generate farming insights and improve prediction accuracy. Deployed the application on Vercel to enhance accessibility, performance, and user experience." 
+        desc: [
+          "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis.",
+          "Built machine learning modules for crop prediction, agricultural monitoring, and data-driven decision-making.",
+          "Engineered scalable data pipelines and integrated advanced analytics to enable real-time agricultural forecasting.",
+          "Processed and analyzed agricultural data to generate farming insights and improve prediction accuracy."
+        ]
       },
       { 
         name: "Agricultural Wastewater Quality Monitoring System Using IoT", 
         period: "Jan 2026 — Apr 2026",
-        desc: "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality. Accurate real-time environmental monitoring with pH, TDS, turbidity and temperature sensors integrated on board. Arduino IDE and C/C++ based programmed sensor data processing and alarm generation. Employed water quality sensors and ESP32 microcontroller to collect and communicate water quality parameters to web dashboard using JavaScript and web development frameworks. Created a secure cloud-based data storage and retrieval system that allows for easy access of agricultural wastewater quality metrics and for historical analysis." 
+        desc: [
+          "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality.",
+          "Accurate real-time environmental monitoring with pH, TDS, turbidity and temperature sensors integrated on board.",
+          "Arduino IDE and C/C++ based programmed sensor data processing and alarm generation.",
+          "Employed water quality sensors and ESP32 microcontroller to collect and communicate water quality parameters to web dashboard."
+        ]
       }
     ],
     publications: [
@@ -155,12 +168,6 @@ export const ResumeSection = () => {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             )}
-            
-            <motion.div 
-              animate={{ opacity: [0.5, 0.8, 0.5] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute inset-0 bg-primary/10 blur-2xl z-0 pointer-events-none" 
-            />
           </motion.div>
         </motion.div>
 
@@ -173,7 +180,6 @@ export const ResumeSection = () => {
           className="lg:w-3/5 w-full"
         >
           <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
-            {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
               <div>
                 <h3 className="text-3xl font-headline font-extrabold text-white mb-1 uppercase tracking-tight">
@@ -220,9 +226,7 @@ export const ResumeSection = () => {
               </div>
             </div>
 
-            {/* Scrollable Preview Area */}
             <div className="space-y-10 max-h-[500px] overflow-y-auto custom-scrollbar pr-4">
-              {/* Summary */}
               <section className="space-y-3">
                 <div className="flex items-center gap-3">
                   <FileText className="w-4 h-4 text-primary" />
@@ -233,7 +237,6 @@ export const ResumeSection = () => {
                 </p>
               </section>
 
-              {/* Education */}
               <section className="space-y-4">
                 <div className="flex items-center gap-3">
                   <GraduationCap className="w-4 h-4 text-primary" />
@@ -255,15 +258,14 @@ export const ResumeSection = () => {
                 </div>
               </section>
 
-              {/* Skills */}
               <section className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Cpu className="w-4 h-4 text-primary" />
                   <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Neural Core</span>
                 </div>
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Programming Languages</p>
+                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Languages</p>
                     <div className="flex flex-wrap gap-2">
                       {resumeData.skills.languages.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
                     </div>
@@ -283,29 +285,34 @@ export const ResumeSection = () => {
                 </div>
               </section>
 
-              {/* Projects */}
               <section className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Briefcase className="w-4 h-4 text-primary" />
                   <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Projects</span>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {resumeData.projects.map((proj) => (
-                    <div key={proj.name} className="p-4 rounded-xl bg-white/5 border border-white/10 group hover:border-primary/30 transition-all">
-                      <div className="flex justify-between items-center mb-1">
-                        <h5 className="text-white text-xs font-bold">{proj.name}</h5>
-                        <span className="text-primary/40 text-[8px] font-mono">{proj.period}</span>
+                    <div key={proj.name} className="p-6 rounded-2xl bg-white/5 border border-white/10 group hover:border-primary/30 transition-all">
+                      <div className="flex justify-between items-center mb-3">
+                        <h5 className="text-white text-sm font-bold">{proj.name}</h5>
+                        <span className="text-primary/40 text-[9px] font-mono">{proj.period}</span>
                       </div>
-                      <p className="text-white/40 text-[10px] leading-relaxed">{proj.desc}</p>
+                      <ul className="space-y-2">
+                        {proj.desc.map((bullet, i) => (
+                          <li key={i} className="flex gap-2 text-[10px] text-white/40 leading-relaxed">
+                            <span className="text-primary">•</span>
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   ))}
                 </div>
               </section>
 
-              {/* Publications */}
               <section className="space-y-4 pb-4">
                 <div className="flex items-center gap-3">
-                  <ShieldCheck className="w-4 h-4 text-primary" />
+                  <Award className="w-4 h-4 text-primary" />
                   <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Publications</span>
                 </div>
                 <div className="space-y-3">
@@ -322,7 +329,6 @@ export const ResumeSection = () => {
         </motion.div>
       </div>
 
-      {/* Fullscreen Preview Modal */}
       <AnimatePresence>
         {isPreviewOpen && (
           <motion.div
@@ -337,14 +343,14 @@ export const ResumeSection = () => {
               exit={{ scale: 0.9, y: 20 }}
               className="relative w-full max-w-5xl h-full bg-white/[0.03] border border-white/10 rounded-[3rem] overflow-hidden flex flex-col shadow-2xl"
             >
-              <div className="p-8 border-b border-white/5 flex items-center justify-between">
+              <div className="p-8 border-b border-white/5 flex items-center justify-between bg-black/40 backdrop-blur-md">
                 <div className="flex items-center gap-4">
                   <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20">
                     <FileText className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-white text-xl font-headline font-bold uppercase tracking-tight">Swapna_Resume_Final.pdf</h2>
-                    <p className="text-white/40 text-[9px] uppercase tracking-[0.3em]">Full Document Preview</p>
+                    <h2 className="text-white text-xl font-headline font-bold uppercase tracking-tight">Tekkala_Swapna_Resume.pdf</h2>
+                    <p className="text-white/40 text-[9px] uppercase tracking-[0.3em]">Official Document Preview</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -352,7 +358,7 @@ export const ResumeSection = () => {
                     onClick={handleDownload}
                     className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest"
                   >
-                    <Download className="w-4 h-4" /> {isDownloading ? "Preparing..." : "Download"}
+                    <Download className="w-4 h-4" /> Download
                   </button>
                   <button 
                     onClick={() => setIsPreviewOpen(false)}
@@ -363,12 +369,24 @@ export const ResumeSection = () => {
                 </div>
               </div>
 
-              <div className="flex-1 bg-black/40 flex items-center justify-center p-12">
-                <iframe 
-                  src={`/${encodeURIComponent("Swapna ResumeFinal(2).pdf")}`} 
-                  className="w-full h-full rounded-xl border border-white/10 bg-white"
-                  title="Resume PDF"
-                />
+              <div className="flex-1 bg-white flex items-center justify-center overflow-auto p-8">
+                {resumePreviewImage ? (
+                  <div className="relative w-full max-w-4xl aspect-[1/1.414] shadow-2xl">
+                    <Image 
+                      src={resumePreviewImage}
+                      alt="Resume Document"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                ) : (
+                  <iframe 
+                    src={`/${encodeURIComponent("Swapna ResumeFinal(2).pdf")}`} 
+                    className="w-full h-full border-none"
+                    title="Resume PDF"
+                  />
+                )}
               </div>
             </motion.div>
           </motion.div>

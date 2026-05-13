@@ -5,6 +5,12 @@
       "description": "Swapna Tekkala Scenic Coastal Background",
       "imageUrl": "https://picsum.photos/seed/coastal-view-7/600/800",
       "imageHint": "scenic mountains sea coast"
+    },
+    {
+      "id": "resume-preview",
+      "description": "Resume Document Preview",
+      "imageUrl": "https://picsum.photos/seed/resume-doc/800/1100",
+      "imageHint": "document paper resume"
     }
   ]
 }
