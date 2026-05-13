@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, ShieldCheck, Sprout, Droplets, Briefcase } from "lucide-react";
+import { ExternalLink, ShieldCheck, Sprout, Droplets, Briefcase, Brain } from "lucide-react";
 import Image from "next/image";
 
 interface Project {
@@ -38,6 +38,14 @@ const projects: Project[] = [
     image: "https://picsum.photos/seed/wastewater/800/600",
     link: "https://github.com/swapna1756",
     icon: <Droplets className="w-8 h-8" />
+  },
+  {
+    id: "ai-virtual-analyzer",
+    title: "AI Virtual Analyzer",
+    subtitle: "AI-powered virtual analysis platform for intelligent insights, data interpretation, and interactive AI-driven analysis.",
+    image: "https://picsum.photos/seed/aianalyzer/800/600",
+    link: "https://ai-virality-analyzer-jun74unm3wpg2butva4tzc.streamlit.app/",
+    icon: <Brain className="w-8 h-8" />
   }
 ];
 
