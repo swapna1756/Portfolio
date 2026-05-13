@@ -7,7 +7,6 @@ import {
   ShieldCheck, 
   Sprout, 
   Droplets, 
-  Briefcase, 
   Brain, 
   Terminal,
   Cpu
@@ -49,13 +48,6 @@ const projects: Project[] = [
     subtitle: "AI Analytics Platform",
     link: "https://ai-virality-analyzer-jun74unm3wpg2butva4tzc.streamlit.app/",
     icon: <Brain className="w-8 h-8" />
-  },
-  {
-    id: "career-guide",
-    title: "CareerGuide",
-    subtitle: "Smart Career Guidance",
-    link: "https://github.com/swapna1756",
-    icon: <Briefcase className="w-8 h-8" />
   }
 ];
 
@@ -94,7 +86,7 @@ export const ProjectsSection = () => {
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 justify-center">
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
