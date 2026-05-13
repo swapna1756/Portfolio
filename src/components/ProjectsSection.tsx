@@ -2,14 +2,21 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, ShieldCheck, Sprout, Droplets, Briefcase, Brain } from "lucide-react";
-import Image from "next/image";
+import { 
+  ExternalLink, 
+  ShieldCheck, 
+  Sprout, 
+  Droplets, 
+  Briefcase, 
+  Brain, 
+  Terminal,
+  Cpu
+} from "lucide-react";
 
 interface Project {
   id: string;
   title: string;
   subtitle: string;
-  image: string;
   link: string;
   icon: React.ReactNode;
 }
@@ -19,33 +26,36 @@ const projects: Project[] = [
     id: "link-armor",
     title: "LinkArmor",
     subtitle: "AI Phishing Detection",
-    image: "https://picsum.photos/seed/linkarmor/800/600",
     link: "https://link-armor.vercel.app",
-    icon: <ShieldCheck className="w-10 h-10" />
+    icon: <ShieldCheck className="w-8 h-8" />
   },
   {
     id: "agri-predict",
     title: "AgriPredict",
     subtitle: "AI Agriculture System",
-    image: "https://picsum.photos/seed/agripredict/800/600",
     link: "https://agripredictf.vercel.app",
-    icon: <Sprout className="w-10 h-10" />
+    icon: <Sprout className="w-8 h-8" />
   },
   {
     id: "wastewater-iot",
     title: "IoT Monitoring",
-    subtitle: "Wastewater Quality",
-    image: "https://picsum.photos/seed/wastewater/800/600",
+    subtitle: "IoT Water Monitoring",
     link: "https://github.com/swapna1756",
-    icon: <Droplets className="w-10 h-10" />
+    icon: <Droplets className="w-8 h-8" />
   },
   {
     id: "ai-virtual-analyzer",
     title: "AI Analyzer",
-    subtitle: "Intelligent Insights",
-    image: "https://picsum.photos/seed/aianalyzer/800/600",
+    subtitle: "AI Analytics Platform",
     link: "https://ai-virality-analyzer-jun74unm3wpg2butva4tzc.streamlit.app/",
-    icon: <Brain className="w-10 h-10" />
+    icon: <Brain className="w-8 h-8" />
+  },
+  {
+    id: "career-guide",
+    title: "CareerGuide",
+    subtitle: "Smart Career Guidance",
+    link: "https://github.com/swapna1756",
+    icon: <Briefcase className="w-8 h-8" />
   }
 ];
 
@@ -71,8 +81,8 @@ export const ProjectsSection = () => {
             whileInView={{ scale: 1, opacity: 1 }}
             className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-6"
           >
-            <Briefcase className="w-4 h-4 text-primary" />
-            <span className="text-primary text-[10px] tracking-[0.3em] uppercase font-bold">Showcase</span>
+            <Terminal className="w-4 h-4 text-primary" />
+            <span className="text-primary text-[10px] tracking-[0.3em] uppercase font-bold">Node Showcase</span>
           </motion.div>
           
           <h2 className="text-4xl md:text-6xl font-headline font-extrabold text-white mb-4 tracking-tighter uppercase">
@@ -83,8 +93,8 @@ export const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Projects Grid - 4 in one line on large screens */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Projects Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-center">
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -92,55 +102,46 @@ export const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.8 }}
-              whileHover={{ y: -10 }}
+              whileHover={{ y: -8 }}
               className="group relative"
             >
               <div 
                 onClick={() => window.open(project.link, '_blank', 'noopener,noreferrer')}
                 className="cursor-pointer relative overflow-hidden bg-white/[0.03] backdrop-blur-xl p-8 rounded-[2rem] border border-white/10 flex flex-col items-center text-center h-full transition-all duration-500 hover:border-primary/40 hover:bg-white/[0.06] shadow-2xl"
               >
-                {/* Central 3D-style Node Container */}
-                <div className="relative w-32 h-32 mb-8 flex items-center justify-center">
-                  {/* Rotating Multi-layered Background Glows */}
+                {/* Compact Icon Node */}
+                <div className="relative w-20 h-20 mb-6 flex items-center justify-center">
                   <motion.div 
                     animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                     className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-secondary/20 rounded-full blur-xl"
                   />
                   
-                  {/* Inner Node Circle */}
-                  <div className="relative z-10 w-24 h-24 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors duration-500 overflow-hidden shadow-inner">
+                  <div className="relative z-10 w-16 h-16 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors duration-500 shadow-inner overflow-hidden">
                     <motion.div 
-                      animate={{ y: [0, -5, 0] }}
+                      animate={{ y: [0, -3, 0] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                      className="text-primary drop-shadow-[0_0_15px_rgba(255,77,166,0.6)]"
+                      className="text-primary drop-shadow-[0_0_10px_rgba(255,77,166,0.5)]"
                     >
                       {project.icon}
                     </motion.div>
                     
-                    {/* Inner Node Shimmer */}
+                    {/* Glow Shimmer */}
                     <motion.div 
                       initial={{ left: "-100%" }}
                       whileHover={{ left: "100%" }}
                       transition={{ duration: 0.6 }}
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 pointer-events-none"
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 pointer-events-none"
                     />
                   </div>
-
-                  {/* Outer Orbital Ring */}
-                  <motion.div 
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-[-10px] border border-primary/5 rounded-full border-dashed"
-                  />
                 </div>
 
                 {/* Content */}
-                <div className="space-y-2 relative z-10">
-                  <h3 className="text-white text-xl font-headline font-extrabold tracking-tight group-hover:text-primary transition-colors duration-300">
+                <div className="space-y-1 relative z-10">
+                  <h3 className="text-white text-base md:text-lg font-headline font-bold tracking-tight group-hover:text-primary transition-colors duration-300">
                     {project.title}
                   </h3>
-                  <p className="text-white/40 text-[9px] uppercase tracking-[0.3em] font-medium group-hover:text-white/60 transition-colors duration-300">
+                  <p className="text-white/40 text-[8px] uppercase tracking-[0.2em] font-medium leading-tight group-hover:text-white/60 transition-colors duration-300">
                     {project.subtitle}
                   </p>
                 </div>
@@ -153,10 +154,10 @@ export const ProjectsSection = () => {
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent skew-x-[-25deg] pointer-events-none"
                 />
 
-                {/* Button-like Indicator */}
-                <div className="mt-8 pt-6 border-t border-white/5 w-full">
-                  <span className="text-[8px] tracking-[0.5em] text-primary/60 uppercase font-bold group-hover:text-primary transition-colors">
-                    Explore Node
+                {/* Subtle Indicator */}
+                <div className="mt-6 pt-4 border-t border-white/5 w-full opacity-40 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[7px] tracking-[0.4em] text-primary uppercase font-bold">
+                    Launch
                   </span>
                 </div>
               </div>
@@ -166,17 +167,17 @@ export const ProjectsSection = () => {
       </div>
 
       {/* Floating Ambient Particles */}
-      {Array.from({ length: 15 }).map((_, i) => (
+      {Array.from({ length: 20 }).map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-primary/20 rounded-full pointer-events-none"
+          className="absolute w-1 h-1 bg-primary/10 rounded-full pointer-events-none"
           animate={{
             x: [Math.random() * 1000 - 500, Math.random() * 1000 - 500],
             y: [Math.random() * 1000 - 500, Math.random() * 1000 - 500],
-            opacity: [0, 0.3, 0],
+            opacity: [0, 0.2, 0],
           }}
           transition={{
-            duration: Math.random() * 10 + 10,
+            duration: Math.random() * 15 + 10,
             repeat: Infinity,
             ease: "linear",
           }}
