@@ -30,13 +30,6 @@ const DEFAULT_CERTS: Certificate[] = [
     imageUrl: "https://picsum.photos/seed/cert2/800/600",
   },
   {
-    id: "3",
-    title: "Full Stack Developer Certificate",
-    issuer: "Certified Program",
-    date: "2024",
-    imageUrl: "https://picsum.photos/seed/cert3/800/600",
-  },
-  {
     id: "4",
     title: "Cyber Security Internship Certificate",
     issuer: "SkillDzire",
