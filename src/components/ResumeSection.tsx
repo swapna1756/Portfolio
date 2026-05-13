@@ -29,15 +29,24 @@ export const ResumeSection = () => {
 
   const handleDownload = () => {
     setIsDownloading(true);
+    
+    // Simulate a brief preparing phase for cinematic feel
     setTimeout(() => {
       setIsDownloading(false);
+      
+      // Use the exact filename provided: "Swapna ResumeFinal(2).pdf"
+      const fileName = "Swapna ResumeFinal(2).pdf";
+      const fileUrl = `/${encodeURIComponent(fileName)}`;
+      
       const link = document.createElement('a');
-      link.href = '/Swapna ResumeFinal(2).pdf';
-      link.download = 'Swapna_Resume.pdf';
+      link.href = fileUrl;
+      link.setAttribute('download', 'Swapna_Tekkala_Resume.pdf');
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    }, 800);
+    }, 1000);
   };
 
   const resumeData = {
@@ -71,21 +80,19 @@ export const ResumeSection = () => {
     },
     projects: [
       { 
-        name: "LinkArmor", 
+        name: "LinkArmor - link-armor.vercel.app", 
         period: "Oct 2025 — Dec 2025",
-        link: "link-armor.vercel.app",
         desc: "Developed an AI-powered phishing detection and cybersecurity monitoring platform. Built a cybersecurity dashboard with threat analytics and scan history. Designed frontend and backend modules using React, Node.js, and MongoDB. Implemented URL threat scoring, SSL verification, and domain inspection features." 
       },
       { 
-        name: "AgriPredict", 
+        name: "AgriPredict - agripredictf.vercel.app", 
         period: "Jan 2026 — Feb 2026",
-        link: "agripredictf.vercel.app",
-        desc: "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis. Built machine learning modules for crop prediction, agricultural monitoring, and data-driven decision-making. Engineered scalable data pipelines. Deployed the application on Vercel to enhance accessibility and performance." 
+        desc: "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis. Built machine learning modules for crop prediction, agricultural monitoring, and data-driven decision-making. Engineered scalable data pipelines and integrated advanced analytics to enable real-time agricultural forecasting, enhancing decision-making capabilities for farmers and stakeholders. Processed and analyzed agricultural data to generate farming insights and improve prediction accuracy. Deployed the application on Vercel to enhance accessibility, performance, and user experience." 
       },
       { 
-        name: "Agricultural Wastewater Quality Monitoring", 
+        name: "Agricultural Wastewater Quality Monitoring System Using IoT", 
         period: "Jan 2026 — Apr 2026",
-        desc: "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality. Accurate real-time environmental monitoring with pH, TDS, turbidity and temperature sensors. Arduino IDE and C/C++ based programmed sensor data processing and alarm generation. Created a secure cloud-based data storage and retrieval system." 
+        desc: "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality. Accurate real-time environmental monitoring with pH, TDS, turbidity and temperature sensors integrated on board. Arduino IDE and C/C++ based programmed sensor data processing and alarm generation. Employed water quality sensors and ESP32 microcontroller to collect and communicate water quality parameters to web dashboard using JavaScript and web development frameworks. Created a secure cloud-based data storage and retrieval system that allows for easy access of agricultural wastewater quality metrics and for historical analysis." 
       }
     ],
     publications: [
@@ -192,7 +199,7 @@ export const ResumeSection = () => {
                   className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg"
                 >
                   <Download className="w-3 h-3" /> 
-                  <span>{isDownloading ? "Initializing..." : "Download"}</span>
+                  <span>{isDownloading ? "Initializing..." : "Download Resume"}</span>
                   {isDownloading && (
                     <motion.div 
                       layoutId="shimmer"
@@ -208,7 +215,7 @@ export const ResumeSection = () => {
                   whileTap={{ scale: 0.95 }}
                   className="glass-button border-white/20 px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] text-white font-bold flex items-center gap-2"
                 >
-                  <Eye className="w-3 h-3" /> View Full
+                  <Eye className="w-3 h-3" /> View Resume
                 </motion.button>
               </div>
             </div>
@@ -256,7 +263,7 @@ export const ResumeSection = () => {
                 </div>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Languages</p>
+                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Programming Languages</p>
                     <div className="flex flex-wrap gap-2">
                       {resumeData.skills.languages.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
                     </div>
@@ -265,6 +272,12 @@ export const ResumeSection = () => {
                     <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Core Skills</p>
                     <div className="flex flex-wrap gap-2">
                       {resumeData.skills.core.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Soft Skills</p>
+                    <div className="flex flex-wrap gap-2">
+                      {resumeData.skills.soft.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
                     </div>
                   </div>
                 </div>
@@ -339,7 +352,7 @@ export const ResumeSection = () => {
                     onClick={handleDownload}
                     className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest"
                   >
-                    <Download className="w-4 h-4" /> Download
+                    <Download className="w-4 h-4" /> {isDownloading ? "Preparing..." : "Download"}
                   </button>
                   <button 
                     onClick={() => setIsPreviewOpen(false)}
@@ -352,8 +365,8 @@ export const ResumeSection = () => {
 
               <div className="flex-1 bg-black/40 flex items-center justify-center p-12">
                 <iframe 
-                  src="/Swapna ResumeFinal(2).pdf" 
-                  className="w-full h-full rounded-xl border border-white/10"
+                  src={`/${encodeURIComponent("Swapna ResumeFinal(2).pdf")}`} 
+                  className="w-full h-full rounded-xl border border-white/10 bg-white"
                   title="Resume PDF"
                 />
               </div>
