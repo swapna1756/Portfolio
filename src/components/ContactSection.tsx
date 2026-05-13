@@ -127,10 +127,10 @@ export const ContactSection = () => {
             <span className="text-primary text-[9px] tracking-[0.4em] uppercase font-bold">Terminal Initialization</span>
           </motion.div>
           
-          <h2 className="text-5xl md:text-8xl font-headline font-extrabold text-white mb-4 tracking-tighter leading-none">
-            LET’S CREATE <br /> 
-            <span className="font-['Dancing_Script'] text-primary normal-case font-bold px-4" style={{ filter: "url(#bubble-gloss)" }}>The Future</span> 
-            <br /> TOGETHER
+          <h2 className="text-4xl md:text-6xl font-headline font-extrabold text-white mb-4 tracking-tighter leading-tight flex flex-wrap justify-center items-center gap-x-3 md:gap-x-5">
+            <span>LET’S CREATE</span> 
+            <span className="font-['Dancing_Script'] text-primary normal-case font-bold px-2" style={{ filter: "url(#bubble-gloss)" }}>The Future</span> 
+            <span>TOGETHER</span>
           </h2>
           <motion.p 
             animate={{ opacity: [0.3, 0.6, 0.3] }}
@@ -355,7 +355,7 @@ export const ContactSection = () => {
               className="group flex items-center gap-4"
             >
               <div className="w-14 h-14 rounded-2xl glass-button flex items-center justify-center text-white/40 group-hover:text-primary group-hover:border-primary/50 transition-all">
-                <div className="absolute inset-0 rounded-2xl bg-primary/0 group-hover:bg-primary/5 transition-colors" />
+                <div className="absolute inset-0 rounded-2xl bg-primary/5 group-hover:bg-primary/5 transition-colors" />
                 {social.icon}
               </div>
               <div className="text-left">
