@@ -58,7 +58,7 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="text-[10vw] lg:text-[7vw] leading-none font-headline font-extrabold text-white uppercase tracking-tighter relative z-10"
+            className="text-[7vw] lg:text-[4.5vw] leading-tight font-headline font-extrabold text-white uppercase tracking-tighter relative z-10"
             style={{ textShadow: "0 0 30px rgba(255, 77, 166, 0.4)" }}
           >
             TABLE <br /> <span className="text-white/40">OF</span> <br /> CONTENT
