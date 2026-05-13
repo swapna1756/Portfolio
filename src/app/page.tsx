@@ -8,6 +8,7 @@ import { ButterflyOverlay } from "@/components/ButterflyOverlay";
 import { GlimmerCursor } from "@/components/GlimmerCursor";
 import { DynamicTagline } from "@/components/DynamicTagline";
 import { HeroSection } from "@/components/HeroSection";
+import { PortfolioDashboard } from "@/components/PortfolioDashboard";
 
 export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
@@ -17,7 +18,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen aurora-bg overflow-hidden">
+    <main className={`relative min-h-screen aurora-bg ${!isEntering ? 'overflow-hidden' : 'overflow-y-auto custom-scrollbar'}`}>
       <GlimmerCursor />
       <ButterflyOverlay />
       
@@ -84,6 +85,7 @@ export default function Home() {
             className="relative z-30 w-full"
           >
             <HeroSection />
+            <PortfolioDashboard />
             <div className="fixed bottom-8 right-8 z-50">
               <button 
                 onClick={() => setIsEntering(false)} 

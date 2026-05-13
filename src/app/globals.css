@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -32,7 +33,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body overflow-hidden selection:bg-primary/30;
+    @apply bg-background text-foreground font-body selection:bg-primary/30;
   }
 }
 
@@ -43,6 +44,18 @@
   
   .glossy-bubble {
     filter: url(#bubble-gloss);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
   }
 }
 
