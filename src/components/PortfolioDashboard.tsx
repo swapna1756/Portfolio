@@ -87,7 +87,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
 
   return (
     <section id="dashboard" className="relative min-h-screen flex items-center justify-center p-6 md:p-12">
-      {/* Background Cinematic Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 blur-[150px] rounded-full" />
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[120px] rounded-full" />
@@ -100,14 +99,11 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
         viewport={{ once: true }}
         className="relative z-10 w-full max-w-6xl aspect-[16/10] bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
       >
-        {/* Left Side: Profile Photo & Name */}
         <div className="w-full md:w-[45%] relative flex flex-col p-12 justify-end group overflow-hidden">
-          {/* Cinematic Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/40 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent z-10" />
           
-          {/* Neon Glow Behind Image */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 blur-[100px] rounded-full group-hover:bg-primary/30 transition-all duration-1000 animate-pulse" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[100px] rounded-full group-hover:bg-primary/20 transition-all duration-1000 animate-pulse" />
 
           {profileImage && (
             <motion.div 
@@ -122,13 +118,12 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
                 alt={profileImage.description}
                 fill
                 priority
-                className="object-cover object-center opacity-70 transition-all duration-1000 grayscale-[0.2] hover:grayscale-0"
+                className="object-cover object-center opacity-60 transition-all duration-1000 grayscale-[0.3] hover:grayscale-0"
                 data-ai-hint={profileImage.imageHint}
               />
             </motion.div>
           )}
 
-          {/* ST Logo Overlay */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -160,10 +155,8 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
           </div>
         </div>
 
-        {/* Right Side: Content Sections */}
         <div className="flex-1 p-12 overflow-y-auto custom-scrollbar bg-black/20">
           <div className="space-y-12">
-            {/* About Me */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -178,7 +171,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
               </p>
             </motion.section>
 
-            {/* Education */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -198,7 +190,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
               </div>
             </motion.section>
 
-            {/* Skills */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -227,7 +218,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
             </motion.section>
           </div>
 
-          {/* Bottom Social Icons */}
           <div className="mt-16 flex items-center gap-5 relative">
             {socialIcons.map((social) => (
               <div key={social.id} className="relative">

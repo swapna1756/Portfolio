@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "profile-photo",
-      "description": "Swapna Tekkala Profile Photo",
-      "imageUrl": "https://picsum.photos/seed/cyber-dev/600/800",
-      "imageHint": "cyberpunk professional portrait"
+      "description": "Swapna Tekkala Scenic Coastal Background",
+      "imageUrl": "https://picsum.photos/seed/coastal-view-7/600/800",
+      "imageHint": "scenic mountains sea coast"
     }
   ]
 }
