@@ -1,21 +1,16 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { 
   Binary, 
   Code2, 
   Database, 
-  Cpu, 
   Globe, 
-  Layers, 
-  FileJson, 
   ShieldCheck, 
   Brain, 
   Wifi, 
   Github, 
-  Activity, 
-  Zap,
   Sparkles
 } from "lucide-react";
 
@@ -29,16 +24,11 @@ const skills: Skill[] = [
   { name: "Python", icon: <Binary className="w-6 h-6" />, color: "#306998" },
   { name: "Java", icon: <Code2 className="w-6 h-6" />, color: "#007396" },
   { name: "SQL", icon: <Database className="w-6 h-6" />, color: "#00758F" },
-  { name: "React", icon: <Cpu className="w-6 h-6" />, color: "#61DAFB" },
   { name: "HTML", icon: <Globe className="w-6 h-6" />, color: "#E34F26" },
-  { name: "CSS", icon: <Layers className="w-6 h-6" />, color: "#1572B6" },
-  { name: "JavaScript", icon: <FileJson className="w-6 h-6" />, color: "#F7DF1E" },
   { name: "Cybersecurity", icon: <ShieldCheck className="w-6 h-6" />, color: "#10B981" },
   { name: "AI/ML", icon: <Brain className="w-6 h-6" />, color: "#A855F7" },
   { name: "IoT", icon: <Wifi className="w-6 h-6" />, color: "#F43F5E" },
   { name: "GitHub", icon: <Github className="w-6 h-6" />, color: "#FFFFFF" },
-  { name: "Streamlit", icon: <Activity className="w-6 h-6" />, color: "#FF4B4B" },
-  { name: "ESP32", icon: <Zap className="w-6 h-6" />, color: "#FF9800" },
 ];
 
 const SkillOrb = ({ skill, index, total }: { skill: Skill; index: number; total: number }) => {
@@ -154,7 +144,7 @@ export const SkillsSection = () => {
       </div>
 
       <div className="relative z-10 w-full max-w-7xl flex flex-col items-center justify-center h-full">
-        {/* Top Branding (Optional, kept minimal) */}
+        {/* Top Branding */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
