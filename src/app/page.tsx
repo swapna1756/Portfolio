@@ -25,15 +25,16 @@ export default function Home() {
   const handleNavigate = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      // Start cinematic transition
+      // Start cinematic "warp" transition
       setIsNavigating(true);
       
-      element.scrollIntoView({ behavior: "smooth" });
+      // Perform smooth scroll
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
 
-      // End transition after scroll mostly completes
+      // End transition after scroll completes (approx 1s for smooth scroll)
       setTimeout(() => {
         setIsNavigating(false);
-      }, 800);
+      }, 1000);
     }
   };
 
@@ -42,16 +43,27 @@ export default function Home() {
       <GlimmerCursor />
       <ButterflyOverlay />
       
-      {/* Cinematic Navigation Overlay */}
+      {/* Cinematic Navigation Overlay (The "Warp" Effect) */}
       <AnimatePresence>
         {isNavigating && (
           <motion.div
             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(10px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
             className="fixed inset-0 z-[100] pointer-events-none bg-primary/5"
-          />
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <motion.div 
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 1.2, opacity: 0 }}
+                className="text-primary/20 text-[12vw] font-headline font-extrabold uppercase tracking-[0.5em] select-none"
+              >
+                Navigating
+              </motion.div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
