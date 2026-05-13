@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useRef } from "react";
@@ -271,50 +272,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
                     <span className="text-primary/60">{skill.icon}</span>
                     <span className="text-white/80 text-[11px] font-medium tracking-widest uppercase">{skill.name}</span>
                   </motion.div>
-                ))}
-              </div>
-            </motion.section>
-
-            <motion.section
-              id="certificates"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-primary/60 text-[10px] tracking-[0.4em] uppercase font-bold">Certificates</h3>
-                <div className="flex-1 h-[1px] bg-white/5" />
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                {[1, 2].map((i) => (
-                  <div key={i} className="glass-button p-4 rounded-2xl flex items-center gap-4">
-                    <Award className="text-primary w-5 h-5" />
-                    <div>
-                      <p className="text-white text-xs font-bold tracking-wide">Professional Certification {i}</p>
-                      <p className="text-white/40 text-[10px] uppercase">Issuer Name • 2024</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.section>
-
-            <motion.section
-              id="projects"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-primary/60 text-[10px] tracking-[0.4em] uppercase font-bold">Projects</h3>
-                <div className="flex-1 h-[1px] bg-white/5" />
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                {["LinkArmor", "AgriPredict"].map((project) => (
-                  <div key={project} className="glass-button p-6 rounded-2xl">
-                    <Layers className="text-primary w-5 h-5 mb-3" />
-                    <h4 className="text-white font-bold text-sm tracking-widest mb-2 uppercase">{project}</h4>
-                    <p className="text-white/40 text-[11px] font-light leading-relaxed">
-                      A cutting-edge solution leveraging AI and cybersecurity best practices for enhanced digital resilience.
-                    </p>
-                  </div>
                 ))}
               </div>
             </motion.section>
