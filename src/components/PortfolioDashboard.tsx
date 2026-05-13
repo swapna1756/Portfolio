@@ -1,7 +1,8 @@
+
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { 
   Linkedin, 
@@ -28,8 +29,61 @@ const skills = [
   { name: "React", icon: <Code2 className="w-4 h-4" /> }
 ];
 
-export const PortfolioDashboard = () => {
+interface PortfolioDashboardProps {
+  onTerminate?: () => void;
+}
+
+export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => {
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo');
+  const [activeInfo, setActiveInfo] = useState<string | null>(null);
+
+  const socialIcons = [
+    { 
+      id: "linkedin",
+      icon: <Linkedin className="w-4 h-4" />, 
+      href: "https://www.linkedin.com/in/tekkala-swapna-8624663a0/", 
+      label: "LinkedIn",
+      type: "link" 
+    },
+    { 
+      id: "github",
+      icon: <Github className="w-4 h-4" />, 
+      href: "https://github.com/swapna1756", 
+      label: "GitHub",
+      type: "link" 
+    },
+    { 
+      id: "email",
+      icon: <Mail className="w-4 h-4" />, 
+      value: "swapnatekkala1756@gmail.com", 
+      label: "Email",
+      type: "tooltip" 
+    },
+    { 
+      id: "phone",
+      icon: <Phone className="w-4 h-4" />, 
+      value: "+91 9346798175", 
+      label: "Phone",
+      type: "tooltip" 
+    },
+    { 
+      id: "home",
+      icon: <Home className="w-4 h-4" />, 
+      onClick: onTerminate, 
+      label: "Home",
+      type: "action" 
+    }
+  ];
+
+  const handleIconClick = (social: any) => {
+    if (social.type === 'tooltip') {
+      setActiveInfo(activeInfo === social.id ? null : social.id);
+    } else if (social.type === 'action' && social.onClick) {
+      social.onClick();
+    } else if (social.type === 'link') {
+      window.open(social.href, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
     <section id="dashboard" className="relative min-h-screen flex items-center justify-center p-6 md:p-12">
@@ -140,25 +194,33 @@ export const PortfolioDashboard = () => {
           </div>
 
           {/* Bottom Social Icons */}
-          <div className="mt-16 flex items-center gap-4">
-            {[
-              { icon: <Linkedin className="w-4 h-4" />, href: "https://linkedin.com", label: "LinkedIn" },
-              { icon: <Github className="w-4 h-4" />, href: "https://github.com", label: "GitHub" },
-              { icon: <Mail className="w-4 h-4" />, href: "mailto:hello@example.com", label: "Email" },
-              { icon: <Phone className="w-4 h-4" />, href: "tel:+1234567890", label: "Phone" },
-              { icon: <Home className="w-4 h-4" />, href: "/", label: "Home" }
-            ].map((social, i) => (
-              <motion.a
-                key={i}
-                href={social.href}
-                target={social.href.startsWith('http') ? "_blank" : undefined}
-                whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 77, 166, 0.15)" }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-white/40 hover:text-primary transition-all shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
-                title={social.label}
-              >
-                {social.icon}
-              </motion.a>
+          <div className="mt-16 flex items-center gap-4 relative">
+            {socialIcons.map((social, i) => (
+              <div key={social.id} className="relative">
+                <AnimatePresence>
+                  {activeInfo === social.id && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                      animate={{ opacity: 1, y: -50, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                      className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap z-50 px-4 py-2 rounded-xl bg-black/60 backdrop-blur-xl border border-primary/30 shadow-[0_0_20px_rgba(255,77,166,0.3)] text-white text-[11px] tracking-wider font-medium"
+                    >
+                      {social.value}
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-black/60 border-r border-b border-primary/30 rotate-45" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <motion.button
+                  onClick={() => handleIconClick(social)}
+                  whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 77, 166, 0.15)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-white/40 hover:text-primary transition-all shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
+                  title={social.label}
+                >
+                  {social.icon}
+                </motion.button>
+              </div>
             ))}
           </div>
         </div>

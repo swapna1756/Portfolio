@@ -85,7 +85,7 @@ export default function Home() {
             className="relative z-30 w-full"
           >
             <HeroSection />
-            <PortfolioDashboard />
+            <PortfolioDashboard onTerminate={() => setIsEntering(false)} />
             <div className="fixed bottom-8 right-8 z-50">
               <button 
                 onClick={() => setIsEntering(false)} 
