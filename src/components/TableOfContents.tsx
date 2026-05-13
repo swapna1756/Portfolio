@@ -44,7 +44,7 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="relative"
+          className="relative lg:w-1/2"
         >
           {/* Ambient Glow behind heading */}
           <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full scale-150 opacity-50" />
@@ -58,10 +58,10 @@ export const TableOfContents = ({ onNavigate }: TOCProps) => {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="text-[7vw] lg:text-[4.5vw] leading-tight font-headline font-extrabold text-white uppercase tracking-tighter relative z-10"
+            className="text-4xl md:text-5xl lg:text-6xl leading-tight font-headline font-extrabold text-white uppercase tracking-tighter relative z-10"
             style={{ textShadow: "0 0 30px rgba(255, 77, 166, 0.4)" }}
           >
-            TABLE <br /> <span className="text-white/40">OF</span> <br /> CONTENT
+            TABLE OF <br /> <span className="text-white/40">CONTENT</span>
           </motion.h2>
         </motion.div>
 
