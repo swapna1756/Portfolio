@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { 
@@ -15,7 +15,9 @@ import {
   ShieldCheck, 
   Database, 
   Globe,
-  Binary
+  Binary,
+  Upload,
+  Camera
 } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
@@ -34,8 +36,47 @@ interface PortfolioDashboardProps {
 }
 
 export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => {
-  const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo');
+  const defaultImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
+  const [customImage, setCustomImage] = useState<string | null>(null);
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const displayImage = customImage || defaultImage;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCustomImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCustomImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const socialIcons = [
     { 
@@ -99,39 +140,60 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
         viewport={{ once: true }}
         className="relative z-10 w-full max-w-6xl aspect-[16/10] bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
       >
-        <div className="w-full md:w-[45%] relative flex flex-col p-12 justify-end group overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10" />
+        {/* Left Side: Profile Image with Upload Functionality */}
+        <div 
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className={`w-full md:w-[45%] relative flex flex-col p-12 justify-end group overflow-hidden transition-colors duration-300 ${isDragging ? 'bg-primary/5' : ''}`}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent z-10" />
           
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[100px] rounded-full group-hover:bg-primary/20 transition-all duration-1000 animate-pulse" />
 
-          {profileImage && (
+          {displayImage && (
             <motion.div 
-              initial={{ scale: 1.1, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1.5 }}
+              key={displayImage}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
               whileHover={{ scale: 1.05 }}
               className="absolute inset-0 w-full h-full"
             >
               <Image 
-                src={profileImage.imageUrl}
-                alt={profileImage.description}
+                src={displayImage}
+                alt="Profile"
                 fill
                 priority
-                className="object-cover object-center opacity-60 transition-all duration-1000 grayscale-[0.3] hover:grayscale-0"
-                data-ai-hint={profileImage.imageHint}
+                className="object-cover object-center opacity-80 transition-all duration-1000"
               />
             </motion.div>
           )}
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="absolute top-8 left-8 z-20 w-12 h-12 rounded-full glass-button flex items-center justify-center border border-primary/30 shadow-[0_0_20px_rgba(255,77,166,0.3)]"
-          >
-            <span className="text-primary font-bold text-xs tracking-tighter" style={{ filter: "url(#bubble-gloss)" }}>ST</span>
-          </motion.div>
+          {/* Upload Controls Overlay */}
+          <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[2px]">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => fileInputRef.current?.click()}
+              className="glass-button p-6 rounded-2xl flex flex-col items-center gap-3 border-primary/30"
+            >
+              <Camera className="w-8 h-8 text-primary" />
+              <span className="text-[10px] tracking-[0.4em] uppercase font-bold text-white">Change Portrait</span>
+              <span className="text-[8px] tracking-[0.2em] text-white/40 uppercase">or drag and drop</span>
+            </motion.button>
+          </div>
 
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileChange} 
+            className="hidden" 
+            accept="image/*" 
+          />
+
+          {/* Branding & Name Overlay */}
           <div className="relative z-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -153,8 +215,17 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
               Swapna <br /> <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>Tekkala</span>
             </motion.h2>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            className="absolute top-8 left-8 z-30 w-12 h-12 rounded-full glass-button flex items-center justify-center border border-primary/30 shadow-[0_0_20px_rgba(255,77,166,0.3)]"
+          >
+            <span className="text-primary font-bold text-xs tracking-tighter" style={{ filter: "url(#bubble-gloss)" }}>ST</span>
+          </motion.div>
         </div>
 
+        {/* Right Side Content */}
         <div className="flex-1 p-12 overflow-y-auto custom-scrollbar bg-black/20">
           <div className="space-y-12">
             <motion.section
@@ -218,6 +289,7 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
             </motion.section>
           </div>
 
+          {/* Social Icons with Interactive Tooltips */}
           <div className="mt-16 flex items-center gap-5 relative">
             {socialIcons.map((social) => (
               <div key={social.id} className="relative">
