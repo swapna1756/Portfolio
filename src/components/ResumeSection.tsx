@@ -26,9 +26,10 @@ export const ResumeSection = () => {
   
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
   
-  // Explicit file name as provided by the user
+  // Encoded file path to prevent 404 errors due to special characters
+  // Ensure the file 'Swapna ResumeFinal(2).pdf' is in the 'public' folder
   const resumeFileName = "Swapna ResumeFinal(2).pdf";
-  const resumePath = `/${resumeFileName}`;
+  const resumePath = `/Swapna%20ResumeFinal(2).pdf`;
 
   const handleDownloadClick = () => {
     setIsDownloading(true);
@@ -183,7 +184,6 @@ export const ResumeSection = () => {
               </div>
               
               <div className="flex gap-4">
-                {/* Fixed Download Button */}
                 <motion.a
                   href={resumePath}
                   download={resumeFileName}
@@ -193,7 +193,7 @@ export const ResumeSection = () => {
                   className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-4 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg cursor-pointer no-underline"
                 >
                   <Download className="w-4 h-4" /> 
-                  <span>{isDownloading ? "Starting..." : "Download Resume"}</span>
+                  <span>{isDownloading ? "Downloading..." : "Download Resume"}</span>
                   {isDownloading && (
                     <motion.div 
                       layoutId="shimmer"
@@ -204,7 +204,6 @@ export const ResumeSection = () => {
                   )}
                 </motion.a>
 
-                {/* Fixed View Button */}
                 <motion.button
                   onClick={() => setIsPreviewOpen(true)}
                   whileHover={{ scale: 1.05, background: "rgba(255, 255, 255, 0.1)" }}
@@ -369,7 +368,6 @@ export const ResumeSection = () => {
                   title="Resume PDF Viewer"
                 />
                 
-                {/* Fallback link if iframe fails */}
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
                    <a 
                     href={resumePath} 
