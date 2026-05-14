@@ -14,8 +14,6 @@ import {
   ExternalLink,
   Upload
 } from "lucide-react";
-import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export const ResumeSection = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -61,51 +59,79 @@ export const ResumeSection = () => {
 
   return (
     <section id="resume" className="relative min-h-screen py-32 px-6 md:px-12 overflow-hidden flex items-center justify-center bg-black/40">
+      {/* Background Orbs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full animate-pulse-glow" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full animate-pulse-glow" style={{ animationDelay: '4s' }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-16 items-center">
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
+      <div className="relative z-10 max-w-4xl mx-auto w-full flex flex-col items-center">
+        {/* Top Tag */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="lg:w-2/5 flex flex-col items-center lg:items-start text-center lg:text-left"
+          className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-8"
         >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-8"
-          >
-            <User className="w-4 h-4 text-primary" />
-            <span className="text-primary text-[10px] tracking-[0.3em] uppercase font-bold">Digital Identity</span>
-          </motion.div>
-
-          <h2 className="text-6xl md:text-7xl font-headline font-extrabold text-white mb-4 tracking-tighter uppercase leading-none">
-            MY <br /> <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>RESUME</span>
-          </h2>
-          <p className="text-white/40 text-[10px] tracking-[0.4em] uppercase font-light">
-            {contactData.title}
-          </p>
+          <User className="w-4 h-4 text-primary" />
+          <span className="text-primary text-[10px] tracking-[0.3em] uppercase font-bold">Digital Identity</span>
         </motion.div>
 
+        {/* Cinematic Heading - Split Animation */}
+        <div className="overflow-hidden mb-12">
+          <motion.h2 className="text-6xl md:text-8xl font-headline font-extrabold tracking-tighter uppercase leading-none flex items-center justify-center">
+            <motion.span 
+              initial={{ x: -150, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-white inline-block"
+            >
+              MY&nbsp;
+            </motion.span>
+            <motion.span 
+              initial={{ x: 150, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-primary inline-block"
+              style={{ filter: "url(#bubble-gloss)" }}
+            >
+              RESUME
+            </motion.span>
+          </motion.h2>
+        </div>
+
+        {/* Contact Details Card */}
         <motion.div 
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="lg:w-3/5 w-full"
+          transition={{ duration: 1, delay: 0.5 }}
+          className="w-full"
         >
           <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
-            <div className="flex flex-col justify-center items-center text-center py-10">
-              <h3 className="text-4xl md:text-5xl font-headline font-extrabold mb-2 uppercase tracking-tight flex flex-wrap justify-center gap-x-4">
+            <div className="flex flex-col justify-center items-center text-center py-6">
+              <motion.h3 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="text-4xl md:text-5xl font-headline font-extrabold mb-2 uppercase tracking-tight flex flex-wrap justify-center gap-x-4"
+              >
                 <span className="text-white">{contactData.firstName}</span>
                 <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>{contactData.lastName}</span>
-              </h3>
+              </motion.h3>
               
-              <div className="flex flex-col items-center gap-3 mt-6 mb-12">
+              <motion.p 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 0.4 }}
+                transition={{ delay: 1 }}
+                className="text-white text-[10px] tracking-[0.4em] uppercase font-light mb-8"
+              >
+                {contactData.title}
+              </motion.p>
+              
+              <div className="flex flex-col items-center gap-3 mt-2 mb-12">
                 <div className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-primary" />
                   <span className="text-white/60 text-sm tracking-widest">{contactData.email}</span>
@@ -162,6 +188,7 @@ export const ResumeSection = () => {
         </motion.div>
       </div>
 
+      {/* Fullscreen PDF Preview Modal */}
       <AnimatePresence>
         {isPreviewOpen && (
           <motion.div
@@ -206,7 +233,7 @@ export const ResumeSection = () => {
               </div>
 
               <div className="flex-1 bg-white/5 flex items-center justify-center overflow-hidden p-0 relative">
-                {resumePath.startsWith('data:') ? (
+                {resumePath.startsWith('data:') || resumePath.includes('.pdf') ? (
                   <iframe 
                     src={resumePath} 
                     className="w-full h-full border-none bg-white"
