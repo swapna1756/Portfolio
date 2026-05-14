@@ -12,13 +12,11 @@ import {
   Briefcase, 
   GraduationCap, 
   X,
-  ShieldCheck,
   Cpu,
   Mail,
   Phone,
   Linkedin,
-  Github,
-  Globe
+  Github
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -26,25 +24,16 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 export const ResumeSection = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
   const resumePreviewImage = PlaceHolderImages.find(img => img.id === 'resume-preview')?.imageUrl;
+  
+  const resumeFileName = "Swapna ResumeFinal(2).pdf";
+  const resumePath = `/${resumeFileName}`;
 
-  const handleDownload = () => {
+  const handleDownloadClick = () => {
     setIsDownloading(true);
-    
-    // Simulate preparation for cinematic effect
-    setTimeout(() => {
-      setIsDownloading(false);
-      const fileName = "Swapna ResumeFinal(2).pdf";
-      const fileUrl = `/${encodeURIComponent(fileName)}`;
-      
-      const link = document.createElement('a');
-      link.href = fileUrl;
-      link.setAttribute('download', 'Swapna_Tekkala_Resume.pdf');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }, 1000);
+    setTimeout(() => setIsDownloading(false), 2000);
   };
 
   const resumeData = {
@@ -198,23 +187,25 @@ export const ResumeSection = () => {
               </div>
               
               <div className="flex gap-4">
-                <motion.button
-                  onClick={handleDownload}
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 77, 166, 0.3)" }}
+                <motion.a
+                  href={resumePath}
+                  download="Swapna_Tekkala_Resume.pdf"
+                  onClick={handleDownloadClick}
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 77, 166, 0.4)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg"
+                  className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg cursor-pointer"
                 >
                   <Download className="w-3 h-3" /> 
                   <span>{isDownloading ? "Initializing..." : "Download Resume"}</span>
                   {isDownloading && (
                     <motion.div 
                       layoutId="shimmer"
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                       animate={{ x: ['-100%', '100%'] }}
                       transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                     />
                   )}
-                </motion.button>
+                </motion.a>
                 <motion.button
                   onClick={() => setIsPreviewOpen(true)}
                   whileHover={{ scale: 1.05, background: "rgba(255, 255, 255, 0.1)" }}
@@ -354,12 +345,15 @@ export const ResumeSection = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <button 
-                    onClick={handleDownload}
-                    className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest"
+                  <motion.a 
+                    href={resumePath}
+                    download="Swapna_Tekkala_Resume.pdf"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest cursor-pointer"
                   >
                     <Download className="w-4 h-4" /> Download
-                  </button>
+                  </motion.a>
                   <button 
                     onClick={() => setIsPreviewOpen(false)}
                     className="p-4 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white transition-all"
@@ -369,7 +363,7 @@ export const ResumeSection = () => {
                 </div>
               </div>
 
-              <div className="flex-1 bg-white flex items-center justify-center overflow-auto p-8">
+              <div className="flex-1 bg-white flex items-center justify-center overflow-auto p-8 relative">
                 {resumePreviewImage ? (
                   <div className="relative w-full max-w-4xl aspect-[1/1.414] shadow-2xl">
                     <Image 
@@ -382,7 +376,7 @@ export const ResumeSection = () => {
                   </div>
                 ) : (
                   <iframe 
-                    src={`/${encodeURIComponent("Swapna ResumeFinal(2).pdf")}`} 
+                    src={resumePath} 
                     className="w-full h-full border-none"
                     title="Resume PDF"
                   />
