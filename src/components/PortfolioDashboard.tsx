@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { 
@@ -10,12 +10,6 @@ import {
   Mail, 
   Phone, 
   Home, 
-  Code2, 
-  Cpu, 
-  ShieldCheck, 
-  Database, 
-  Globe,
-  Binary,
   Camera
 } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -31,14 +25,27 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Load saved image on mount
+  useEffect(() => {
+    const savedImage = localStorage.getItem('portfolio_profile_image');
+    if (savedImage) {
+      setCustomImage(savedImage);
+    }
+  }, []);
+
   const displayImage = customImage || defaultImage;
+
+  const saveImage = (base64: string) => {
+    setCustomImage(base64);
+    localStorage.setItem('portfolio_profile_image', base64);
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setCustomImage(reader.result as string);
+        saveImage(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -61,7 +68,7 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setCustomImage(reader.result as string);
+        saveImage(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -129,7 +136,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
         viewport={{ once: true }}
         className="relative z-10 w-full max-w-6xl aspect-[16/10] bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
       >
-        {/* Left Side: Profile Image */}
         <div 
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -196,7 +202,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
           </motion.div>
         </div>
 
-        {/* Right Side Content */}
         <div className="flex-1 p-12 overflow-y-auto custom-scrollbar bg-black/20">
           <div className="space-y-16">
             <motion.section
