@@ -54,7 +54,8 @@ export const ResumeSection = () => {
   };
 
   const contactData = {
-    name: "TEKKALA SWAPNA",
+    firstName: "TEKKALA",
+    lastName: "SWAPNA",
     title: "Cybersecurity • AI • Innovation",
     email: "swapnatekkala1756@gmail.com",
     phone: "+91 9346798175"
@@ -101,7 +102,7 @@ export const ResumeSection = () => {
             {profileImage && (
               <Image 
                 src={profileImage}
-                alt={contactData.name}
+                alt={`${contactData.firstName} ${contactData.lastName}`}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -118,8 +119,9 @@ export const ResumeSection = () => {
         >
           <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
             <div className="flex flex-col justify-center items-center text-center py-10">
-              <h3 className="text-4xl md:text-5xl font-headline font-extrabold text-white mb-2 uppercase tracking-tight">
-                {contactData.name}
+              <h3 className="text-4xl md:text-5xl font-headline font-extrabold mb-2 uppercase tracking-tight flex flex-wrap justify-center gap-x-4">
+                <span className="text-white">{contactData.firstName}</span>
+                <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>{contactData.lastName}</span>
               </h3>
               
               <div className="flex flex-col items-center gap-3 mt-6 mb-12">
