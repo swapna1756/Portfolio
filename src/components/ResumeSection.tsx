@@ -15,8 +15,7 @@ import {
   Cpu,
   Mail,
   Phone,
-  Linkedin,
-  Github
+  ExternalLink
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -26,8 +25,8 @@ export const ResumeSection = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
-  const resumePreviewImage = PlaceHolderImages.find(img => img.id === 'resume-preview')?.imageUrl;
   
+  // Explicit file name as provided by the user
   const resumeFileName = "Swapna ResumeFinal(2).pdf";
   const resumePath = `/${resumeFileName}`;
 
@@ -45,7 +44,7 @@ export const ResumeSection = () => {
       linkedin: "linkedin.com/in/tekkala-swapna-8624663a0",
       github: "github.com/swapna1756"
     },
-    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts. Implemented projects such as phishing detection system and smart agricultural monitoring system. Interpersonal, analytical, problem solving and team working skills, with an interest in cyber security and emerging technologies.",
+    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts. Implemented projects such as phishing detection system and smart agricultural monitoring system.",
     education: [
       {
         degree: "Bachelor of Technology in Computer Science Engineering (Cyber Security)",
@@ -67,33 +66,30 @@ export const ResumeSection = () => {
     },
     projects: [
       { 
-        name: "LinkArmor - link-armor.vercel.app", 
+        name: "LinkArmor - AI Phishing Detection", 
         period: "Oct 2025 — Dec 2025",
         desc: [
           "Developed an AI-powered phishing detection and cybersecurity monitoring platform.",
           "Built a cybersecurity dashboard with threat analytics and scan history.",
-          "Designed frontend and backend modules using React, Node.js, and MongoDB.",
           "Implemented URL threat scoring, SSL verification, and domain inspection features."
         ]
       },
       { 
-        name: "AgriPredict - agripredictf.vercel.app", 
+        name: "AgriPredict - AI Agriculture System", 
         period: "Jan 2026 — Feb 2026",
         desc: [
-          "Developed an AI-powered agricultural prediction platform using machine learning techniques for smart farming analysis.",
-          "Built machine learning modules for crop prediction, agricultural monitoring, and data-driven decision-making.",
-          "Engineered scalable data pipelines and integrated advanced analytics to enable real-time agricultural forecasting.",
-          "Processed and analyzed agricultural data to generate farming insights and improve prediction accuracy."
+          "Developed an AI-powered agricultural prediction platform using machine learning.",
+          "Built machine learning modules for crop prediction and agricultural monitoring.",
+          "Engineered scalable data pipelines for real-time agricultural forecasting."
         ]
       },
       { 
-        name: "Agricultural Wastewater Quality Monitoring System Using IoT", 
+        name: "IoT Wastewater Quality Monitoring", 
         period: "Jan 2026 — Apr 2026",
         desc: [
-          "Built an agricultural wastewater monitoring system based on IoT and ESP32 that can continuously measure water quality.",
-          "Accurate real-time environmental monitoring with pH, TDS, turbidity and temperature sensors integrated on board.",
-          "Arduino IDE and C/C++ based programmed sensor data processing and alarm generation.",
-          "Employed water quality sensors and ESP32 microcontroller to collect and communicate water quality parameters to web dashboard."
+          "Built an agricultural wastewater monitoring system based on IoT and ESP32.",
+          "Integrated pH, TDS, turbidity and temperature sensors for real-time monitoring.",
+          "Programmed sensor data processing and alarm generation using C/C++."
         ]
       }
     ],
@@ -104,13 +100,13 @@ export const ResumeSection = () => {
       },
       {
         title: "LinkArmor – AI-Based Phishing Detection Platform",
-        detail: "Accepted • International Conference on Sustainable Smart Computing and Communications • 2025"
+        detail: "International Conference on Sustainable Smart Computing • 2025"
       }
     ]
   };
 
   return (
-    <section id="resume" className="relative min-h-screen py-32 px-6 md:px-12 overflow-hidden flex items-center justify-center">
+    <section id="resume" className="relative min-h-screen py-32 px-6 md:px-12 overflow-hidden flex items-center justify-center bg-black/40">
       {/* Background Ambient Glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full animate-pulse-glow" />
@@ -168,7 +164,7 @@ export const ResumeSection = () => {
           transition={{ duration: 1, delay: 0.2 }}
           className="lg:w-3/5 w-full"
         >
-          <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
+          <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/20 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
               <div>
                 <h3 className="text-3xl font-headline font-extrabold text-white mb-1 uppercase tracking-tight">
@@ -187,16 +183,17 @@ export const ResumeSection = () => {
               </div>
               
               <div className="flex gap-4">
+                {/* Fixed Download Button */}
                 <motion.a
                   href={resumePath}
-                  download="Swapna_Tekkala_Resume.pdf"
+                  download={resumeFileName}
                   onClick={handleDownloadClick}
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 77, 166, 0.4)" }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(255, 77, 166, 0.4)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg cursor-pointer"
+                  className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-4 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg cursor-pointer no-underline"
                 >
-                  <Download className="w-3 h-3" /> 
-                  <span>{isDownloading ? "Initializing..." : "Download Resume"}</span>
+                  <Download className="w-4 h-4" /> 
+                  <span>{isDownloading ? "Starting..." : "Download Resume"}</span>
                   {isDownloading && (
                     <motion.div 
                       layoutId="shimmer"
@@ -206,13 +203,15 @@ export const ResumeSection = () => {
                     />
                   )}
                 </motion.a>
+
+                {/* Fixed View Button */}
                 <motion.button
                   onClick={() => setIsPreviewOpen(true)}
                   whileHover={{ scale: 1.05, background: "rgba(255, 255, 255, 0.1)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass-button border-white/20 px-6 py-3 rounded-full text-[9px] uppercase tracking-[0.3em] text-white font-bold flex items-center gap-2"
+                  className="glass-button border-white/20 px-6 py-4 rounded-full text-[9px] uppercase tracking-[0.3em] text-white font-bold flex items-center gap-2"
                 >
-                  <Eye className="w-3 h-3" /> View Resume
+                  <Eye className="w-4 h-4" /> View Resume
                 </motion.button>
               </div>
             </div>
@@ -347,10 +346,10 @@ export const ResumeSection = () => {
                 <div className="flex items-center gap-4">
                   <motion.a 
                     href={resumePath}
-                    download="Swapna_Tekkala_Resume.pdf"
+                    download={resumeFileName}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest cursor-pointer"
+                    className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest cursor-pointer no-underline"
                   >
                     <Download className="w-4 h-4" /> Download
                   </motion.a>
@@ -363,24 +362,24 @@ export const ResumeSection = () => {
                 </div>
               </div>
 
-              <div className="flex-1 bg-white flex items-center justify-center overflow-auto p-8 relative">
-                {resumePreviewImage ? (
-                  <div className="relative w-full max-w-4xl aspect-[1/1.414] shadow-2xl">
-                    <Image 
-                      src={resumePreviewImage}
-                      alt="Resume Document"
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                ) : (
-                  <iframe 
-                    src={resumePath} 
-                    className="w-full h-full border-none"
-                    title="Resume PDF"
-                  />
-                )}
+              <div className="flex-1 bg-white/5 flex items-center justify-center overflow-hidden p-0 relative">
+                <iframe 
+                  src={resumePath} 
+                  className="w-full h-full border-none bg-white"
+                  title="Resume PDF Viewer"
+                />
+                
+                {/* Fallback link if iframe fails */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+                   <a 
+                    href={resumePath} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-primary/60 hover:text-primary transition-colors text-[10px] uppercase tracking-widest font-bold bg-black/40 px-6 py-2 rounded-full backdrop-blur-md border border-primary/20"
+                   >
+                     <ExternalLink className="w-3 h-3" /> Open in New Tab if not loading
+                   </a>
+                </div>
               </div>
             </motion.div>
           </motion.div>
