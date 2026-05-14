@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   FileText, 
@@ -15,7 +15,9 @@ import {
   Cpu,
   Mail,
   Phone,
-  ExternalLink
+  ExternalLink,
+  Upload,
+  Camera
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -23,16 +25,38 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 export const ResumeSection = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [customResumeUri, setCustomResumeUri] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
   
-  // Encoded file path to prevent 404 errors due to special characters
-  // Ensure the file 'Swapna ResumeFinal(2).pdf' is in the 'public' folder
   const resumeFileName = "Swapna ResumeFinal(2).pdf";
-  const resumePath = `/Swapna%20ResumeFinal(2).pdf`;
+  // The primary path is the uploaded data URI, falling back to the public folder path
+  const resumePath = customResumeUri || `/Swapna%20ResumeFinal(2).pdf`;
+
+  useEffect(() => {
+    const savedResume = localStorage.getItem('portfolio_resume_uri');
+    if (savedResume) {
+      setCustomResumeUri(savedResume);
+    }
+  }, []);
+
+  const handleResumeUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64 = reader.result as string;
+        setCustomResumeUri(base64);
+        localStorage.setItem('portfolio_resume_uri', base64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleDownloadClick = () => {
     setIsDownloading(true);
+    // Standard link click behavior will follow the href
     setTimeout(() => setIsDownloading(false), 2000);
   };
 
@@ -108,14 +132,12 @@ export const ResumeSection = () => {
 
   return (
     <section id="resume" className="relative min-h-screen py-32 px-6 md:px-12 overflow-hidden flex items-center justify-center bg-black/40">
-      {/* Background Ambient Glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full animate-pulse-glow" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full animate-pulse-glow" style={{ animationDelay: '4s' }} />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-16 items-center">
-        {/* LEFT SIDE: Identity Node */}
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -157,7 +179,6 @@ export const ResumeSection = () => {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT SIDE: Resume Dashboard */}
         <motion.div 
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -165,7 +186,7 @@ export const ResumeSection = () => {
           transition={{ duration: 1, delay: 0.2 }}
           className="lg:w-3/5 w-full"
         >
-          <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/20 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
+          <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
               <div>
                 <h3 className="text-3xl font-headline font-extrabold text-white mb-1 uppercase tracking-tight">
@@ -183,7 +204,14 @@ export const ResumeSection = () => {
                 </div>
               </div>
               
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleResumeUpload} 
+                  className="hidden" 
+                  accept=".pdf"
+                />
                 <motion.a
                   href={resumePath}
                   download={resumeFileName}
@@ -193,15 +221,7 @@ export const ResumeSection = () => {
                   className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-4 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg cursor-pointer no-underline"
                 >
                   <Download className="w-4 h-4" /> 
-                  <span>{isDownloading ? "Downloading..." : "Download Resume"}</span>
-                  {isDownloading && (
-                    <motion.div 
-                      layoutId="shimmer"
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                      animate={{ x: ['-100%', '100%'] }}
-                      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                    />
-                  )}
+                  <span>{isDownloading ? "Starting..." : "Download Resume"}</span>
                 </motion.a>
 
                 <motion.button
@@ -211,6 +231,15 @@ export const ResumeSection = () => {
                   className="glass-button border-white/20 px-6 py-4 rounded-full text-[9px] uppercase tracking-[0.3em] text-white font-bold flex items-center gap-2"
                 >
                   <Eye className="w-4 h-4" /> View Resume
+                </motion.button>
+
+                <motion.button
+                  onClick={() => fileInputRef.current?.click()}
+                  whileHover={{ scale: 1.05, background: "rgba(255, 255, 255, 0.05)" }}
+                  className="p-4 rounded-full border border-white/10 text-white/40 hover:text-primary transition-all"
+                  title="Upload/Replace Resume File"
+                >
+                  <Upload className="w-4 h-4" />
                 </motion.button>
               </div>
             </div>
@@ -362,11 +391,31 @@ export const ResumeSection = () => {
               </div>
 
               <div className="flex-1 bg-white/5 flex items-center justify-center overflow-hidden p-0 relative">
-                <iframe 
-                  src={resumePath} 
-                  className="w-full h-full border-none bg-white"
-                  title="Resume PDF Viewer"
-                />
+                {resumePath.startsWith('data:') ? (
+                  <iframe 
+                    src={resumePath} 
+                    className="w-full h-full border-none bg-white"
+                    title="Resume PDF Viewer"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-8 text-center p-12">
+                    <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+                      <FileText className="w-12 h-12 text-primary" />
+                    </div>
+                    <div className="max-w-md space-y-4">
+                      <h3 className="text-white text-2xl font-bold">Resume Link Ready</h3>
+                      <p className="text-white/40 text-sm leading-relaxed">
+                        To view your document, please ensure <span className="text-primary">Swapna ResumeFinal(2).pdf</span> is in your project's public folder, or use the upload button to select it from your device.
+                      </p>
+                      <button 
+                        onClick={() => fileInputRef.current?.click()}
+                        className="glass-button px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold text-primary"
+                      >
+                        Upload Resume File
+                      </button>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
                    <a 
@@ -375,7 +424,7 @@ export const ResumeSection = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-primary/60 hover:text-primary transition-colors text-[10px] uppercase tracking-widest font-bold bg-black/40 px-6 py-2 rounded-full backdrop-blur-md border border-primary/20"
                    >
-                     <ExternalLink className="w-3 h-3" /> Open in New Tab if not loading
+                     <ExternalLink className="w-3 h-3" /> Open in New Tab
                    </a>
                 </div>
               </div>
