@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "profile-photo",
-      "description": "Swapna Tekkala Scenic Coastal Background",
-      "imageUrl": "https://picsum.photos/seed/coastal-view-7/600/800",
-      "imageHint": "scenic mountains sea coast"
+      "description": "Swapna Tekkala looking at hanging lights portrait",
+      "imageUrl": "https://picsum.photos/seed/swapna-portrait/600/800",
+      "imageHint": "woman looking up lights portrait"
     },
     {
       "id": "resume-preview",

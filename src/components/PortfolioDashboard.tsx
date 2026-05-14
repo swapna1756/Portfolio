@@ -139,25 +139,18 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent z-10" />
           
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[100px] rounded-full group-hover:bg-primary/20 transition-all duration-1000 animate-pulse" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[100px] rounded-full animate-pulse" />
 
           {displayImage && (
-            <motion.div 
-              key={displayImage}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
-              whileHover={{ scale: 1.05 }}
-              className="absolute inset-0 w-full h-full"
-            >
+            <div className="absolute inset-0 w-full h-full">
               <Image 
                 src={displayImage}
                 alt="Profile"
                 fill
                 priority
-                className="object-cover object-center opacity-80 transition-all duration-1000"
+                className="object-cover object-center"
               />
-            </motion.div>
+            </div>
           )}
 
           <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[2px]">
@@ -197,9 +190,9 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="absolute top-8 left-8 z-30 w-12 h-12 rounded-full glass-button flex items-center justify-center border border-primary/30 shadow-[0_0_20px_rgba(255,77,166,0.3)]"
+            className="absolute top-8 left-8 z-30 w-12 h-12 rounded-full glass-button flex items-center justify-center border border-primary/40 shadow-[0_0_20px_rgba(255,77,166,0.3)]"
           >
-            <span className="text-primary font-bold text-xs tracking-tighter" style={{ filter: "url(#bubble-gloss)" }}>ST</span>
+            <span className="text-primary font-bold text-sm tracking-tighter" style={{ filter: "url(#bubble-gloss)" }}>ST</span>
           </motion.div>
         </div>
 
