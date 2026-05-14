@@ -23,8 +23,6 @@ export const ResumeSection = () => {
   const [customResumeUri, setCustomResumeUri] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
-  
   const resumeFileName = "Swapna ResumeFinal(2).pdf";
   const resumePath = customResumeUri || `/Swapna%20ResumeFinal(2).pdf`;
 
@@ -88,26 +86,9 @@ export const ResumeSection = () => {
           <h2 className="text-6xl md:text-7xl font-headline font-extrabold text-white mb-4 tracking-tighter uppercase leading-none">
             MY <br /> <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>RESUME</span>
           </h2>
-          <p className="text-white/40 text-[10px] tracking-[0.4em] uppercase font-light mb-12">
+          <p className="text-white/40 text-[10px] tracking-[0.4em] uppercase font-light">
             {contactData.title}
           </p>
-
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="relative w-64 h-80 rounded-[2.5rem] overflow-hidden group shadow-2xl"
-          >
-            <div className="absolute inset-0 border border-white/20 rounded-[2.5rem] z-20 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-background/40 to-transparent z-10" />
-            
-            {profileImage && (
-              <Image 
-                src={profileImage}
-                alt={`${contactData.firstName} ${contactData.lastName}`}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-            )}
-          </motion.div>
         </motion.div>
 
         <motion.div 
