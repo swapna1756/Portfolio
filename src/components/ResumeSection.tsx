@@ -8,16 +8,11 @@ import {
   Download, 
   Eye, 
   User, 
-  Award, 
-  Briefcase, 
-  GraduationCap, 
   X,
-  Cpu,
   Mail,
   Phone,
   ExternalLink,
-  Upload,
-  Camera
+  Upload
 } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -31,7 +26,6 @@ export const ResumeSection = () => {
   const profileImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
   
   const resumeFileName = "Swapna ResumeFinal(2).pdf";
-  // The primary path is the uploaded data URI, falling back to the public folder path
   const resumePath = customResumeUri || `/Swapna%20ResumeFinal(2).pdf`;
 
   useEffect(() => {
@@ -56,78 +50,14 @@ export const ResumeSection = () => {
 
   const handleDownloadClick = () => {
     setIsDownloading(true);
-    // Standard link click behavior will follow the href
     setTimeout(() => setIsDownloading(false), 2000);
   };
 
-  const resumeData = {
+  const contactData = {
     name: "TEKKALA SWAPNA",
     title: "Cybersecurity • AI • Innovation",
-    contact: {
-      phone: "+91-9346798175",
-      email: "swapnatekkala1756@gmail.com",
-      linkedin: "linkedin.com/in/tekkala-swapna-8624663a0",
-      github: "github.com/swapna1756"
-    },
-    summary: "Computer Science Engineering Student with specialization in Cyber Security, with experience in hands-on AI based applications, IoT systems and web development. Familiar with Python, Java, SQL, cybersecurity, and machine learning concepts. Implemented projects such as phishing detection system and smart agricultural monitoring system.",
-    education: [
-      {
-        degree: "Bachelor of Technology in Computer Science Engineering (Cyber Security)",
-        institution: "Kalasalingam Academy of Research and Education, Tamil Nadu, India",
-        period: "2023 — 2027",
-        metric: "CGPA: 8.78"
-      },
-      {
-        degree: "Board of Intermediate",
-        institution: "Sri Chaitanya Junior College, Andhra Pradesh, India",
-        period: "2021 — 2023",
-        metric: "Percentage: 92%"
-      }
-    ],
-    skills: {
-      languages: ["Python", "Java", "SQL"],
-      core: ["Cybersecurity", "IoT", "Machine Learning Basics"],
-      soft: ["Communication", "Problem Solving", "Team Collaboration"]
-    },
-    projects: [
-      { 
-        name: "LinkArmor - AI Phishing Detection", 
-        period: "Oct 2025 — Dec 2025",
-        desc: [
-          "Developed an AI-powered phishing detection and cybersecurity monitoring platform.",
-          "Built a cybersecurity dashboard with threat analytics and scan history.",
-          "Implemented URL threat scoring, SSL verification, and domain inspection features."
-        ]
-      },
-      { 
-        name: "AgriPredict - AI Agriculture System", 
-        period: "Jan 2026 — Feb 2026",
-        desc: [
-          "Developed an AI-powered agricultural prediction platform using machine learning.",
-          "Built machine learning modules for crop prediction and agricultural monitoring.",
-          "Engineered scalable data pipelines for real-time agricultural forecasting."
-        ]
-      },
-      { 
-        name: "IoT Wastewater Quality Monitoring", 
-        period: "Jan 2026 — Apr 2026",
-        desc: [
-          "Built an agricultural wastewater monitoring system based on IoT and ESP32.",
-          "Integrated pH, TDS, turbidity and temperature sensors for real-time monitoring.",
-          "Programmed sensor data processing and alarm generation using C/C++."
-        ]
-      }
-    ],
-    publications: [
-      {
-        title: "Agricultural Wastewater Quality Monitoring System Using IoT",
-        detail: "Acceptance • IJFMR • 2026"
-      },
-      {
-        title: "LinkArmor – AI-Based Phishing Detection Platform",
-        detail: "International Conference on Sustainable Smart Computing • 2025"
-      }
-    ]
+    email: "swapnatekkala1756@gmail.com",
+    phone: "+91 9346798175"
   };
 
   return (
@@ -158,7 +88,7 @@ export const ResumeSection = () => {
             MY <br /> <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>RESUME</span>
           </h2>
           <p className="text-white/40 text-[10px] tracking-[0.4em] uppercase font-light mb-12">
-            {resumeData.title}
+            {contactData.title}
           </p>
 
           <motion.div
@@ -171,7 +101,7 @@ export const ResumeSection = () => {
             {profileImage && (
               <Image 
                 src={profileImage}
-                alt={resumeData.name}
+                alt={contactData.name}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -187,24 +117,23 @@ export const ResumeSection = () => {
           className="lg:w-3/5 w-full"
         >
           <div className="relative glass-button rounded-[3rem] border border-white/10 p-8 md:p-12 overflow-hidden bg-black/40 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
-              <div>
-                <h3 className="text-3xl font-headline font-extrabold text-white mb-1 uppercase tracking-tight">
-                  {resumeData.name}
-                </h3>
-                <div className="flex flex-col gap-2 mt-4">
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-3 h-3 text-primary" />
-                    <span className="text-white/60 text-[10px] tracking-widest">{resumeData.contact.email}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-3 h-3 text-primary" />
-                    <span className="text-white/60 text-[10px] tracking-widest">{resumeData.contact.phone}</span>
-                  </div>
+            <div className="flex flex-col justify-center items-center text-center py-10">
+              <h3 className="text-4xl md:text-5xl font-headline font-extrabold text-white mb-2 uppercase tracking-tight">
+                {contactData.name}
+              </h3>
+              
+              <div className="flex flex-col items-center gap-3 mt-6 mb-12">
+                <div className="flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-primary" />
+                  <span className="text-white/60 text-sm tracking-widest">{contactData.email}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="w-4 h-4 text-primary" />
+                  <span className="text-white/60 text-sm tracking-widest">{contactData.phone}</span>
                 </div>
               </div>
               
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap justify-center gap-6">
                 <input 
                   type="file" 
                   ref={fileInputRef} 
@@ -218,9 +147,9 @@ export const ResumeSection = () => {
                   onClick={handleDownloadClick}
                   whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(255, 77, 166, 0.4)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden bg-primary text-primary-foreground px-6 py-4 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-2 transition-all shadow-lg cursor-pointer no-underline"
+                  className="relative overflow-hidden bg-primary text-primary-foreground px-8 py-5 rounded-full text-[10px] uppercase tracking-[0.3em] font-bold flex items-center gap-3 transition-all shadow-lg cursor-pointer no-underline"
                 >
-                  <Download className="w-4 h-4" /> 
+                  <Download className="w-5 h-5" /> 
                   <span>{isDownloading ? "Starting..." : "Download Resume"}</span>
                 </motion.a>
 
@@ -228,121 +157,24 @@ export const ResumeSection = () => {
                   onClick={() => setIsPreviewOpen(true)}
                   whileHover={{ scale: 1.05, background: "rgba(255, 255, 255, 0.1)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass-button border-white/20 px-6 py-4 rounded-full text-[9px] uppercase tracking-[0.3em] text-white font-bold flex items-center gap-2"
+                  className="glass-button border-white/20 px-8 py-5 rounded-full text-[10px] uppercase tracking-[0.3em] text-white font-bold flex items-center gap-3"
                 >
-                  <Eye className="w-4 h-4" /> View Resume
+                  <Eye className="w-5 h-5" /> View Resume
                 </motion.button>
 
                 <motion.button
                   onClick={() => fileInputRef.current?.click()}
                   whileHover={{ scale: 1.05, background: "rgba(255, 255, 255, 0.05)" }}
-                  className="p-4 rounded-full border border-white/10 text-white/40 hover:text-primary transition-all"
+                  className="p-5 rounded-full border border-white/10 text-white/40 hover:text-primary transition-all"
                   title="Upload/Replace Resume File"
                 >
-                  <Upload className="w-4 h-4" />
+                  <Upload className="w-5 h-5" />
                 </motion.button>
               </div>
             </div>
 
-            <div className="space-y-10 max-h-[500px] overflow-y-auto custom-scrollbar pr-4">
-              <section className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <FileText className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Summary</span>
-                </div>
-                <p className="text-white/60 text-[11px] leading-relaxed font-light">
-                  {resumeData.summary}
-                </p>
-              </section>
-
-              <section className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <GraduationCap className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Education</span>
-                </div>
-                <div className="space-y-4">
-                  {resumeData.education.map((edu, idx) => (
-                    <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="text-white font-medium text-sm max-w-[70%]">{edu.degree}</h4>
-                        <span className="text-primary/60 text-[9px] font-bold">{edu.period}</span>
-                      </div>
-                      <p className="text-white/40 text-[10px] mb-3">{edu.institution}</p>
-                      <div className="inline-block bg-primary/10 border border-primary/20 px-3 py-1 rounded-full">
-                        <span className="text-primary text-[10px] font-bold tracking-widest">{edu.metric}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Cpu className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Neural Core</span>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Languages</p>
-                    <div className="flex flex-wrap gap-2">
-                      {resumeData.skills.languages.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Core Skills</p>
-                    <div className="flex flex-wrap gap-2">
-                      {resumeData.skills.core.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-[8px] tracking-widest text-white/20 uppercase mb-2">Soft Skills</p>
-                    <div className="flex flex-wrap gap-2">
-                      {resumeData.skills.soft.map(s => <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/5 text-[9px] text-white/60">{s}</span>)}
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Briefcase className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Projects</span>
-                </div>
-                <div className="space-y-4">
-                  {resumeData.projects.map((proj) => (
-                    <div key={proj.name} className="p-6 rounded-2xl bg-white/5 border border-white/10 group hover:border-primary/30 transition-all">
-                      <div className="flex justify-between items-center mb-3">
-                        <h5 className="text-white text-sm font-bold">{proj.name}</h5>
-                        <span className="text-primary/40 text-[9px] font-mono">{proj.period}</span>
-                      </div>
-                      <ul className="space-y-2">
-                        {proj.desc.map((bullet, i) => (
-                          <li key={i} className="flex gap-2 text-[10px] text-white/40 leading-relaxed">
-                            <span className="text-primary">•</span>
-                            {bullet}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="space-y-4 pb-4">
-                <div className="flex items-center gap-3">
-                  <Award className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold">Publications</span>
-                </div>
-                <div className="space-y-3">
-                  {resumeData.publications.map((pub, i) => (
-                    <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/10">
-                      <p className="text-white/80 text-[10px] leading-relaxed font-medium mb-1">{pub.title}</p>
-                      <p className="text-primary/40 text-[8px] uppercase tracking-wider">{pub.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl -z-10" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary/5 blur-3xl -z-10" />
           </div>
         </motion.div>
       </div>
@@ -367,7 +199,7 @@ export const ResumeSection = () => {
                     <FileText className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-white text-xl font-headline font-bold uppercase tracking-tight">Tekkala_Swapna_Resume.pdf</h2>
+                    <h2 className="text-white text-xl font-headline font-bold uppercase tracking-tight">{resumeFileName}</h2>
                     <p className="text-white/40 text-[9px] uppercase tracking-[0.3em]">Official Document Preview</p>
                   </div>
                 </div>
@@ -405,7 +237,7 @@ export const ResumeSection = () => {
                     <div className="max-w-md space-y-4">
                       <h3 className="text-white text-2xl font-bold">Resume Link Ready</h3>
                       <p className="text-white/40 text-sm leading-relaxed">
-                        To view your document, please ensure <span className="text-primary">Swapna ResumeFinal(2).pdf</span> is in your project's public folder, or use the upload button to select it from your device.
+                        To view your document, please ensure <span className="text-primary">{resumeFileName}</span> is in your project's public folder, or use the upload button to select it from your device.
                       </p>
                       <button 
                         onClick={() => fileInputRef.current?.click()}
