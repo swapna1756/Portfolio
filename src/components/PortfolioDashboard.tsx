@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { 
@@ -9,70 +9,17 @@ import {
   Github, 
   Mail, 
   Phone, 
-  Home, 
-  Camera
+  Home
 } from "lucide-react";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 interface PortfolioDashboardProps {
   onTerminate?: () => void;
 }
 
 export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => {
-  const defaultImage = PlaceHolderImages.find(img => img.id === 'profile-photo')?.imageUrl;
-  const [customImage, setCustomImage] = useState<string | null>(null);
+  const defaultImage = "/swapna.png";
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Load saved image on mount
-  useEffect(() => {
-    const savedImage = localStorage.getItem('portfolio_profile_image');
-    if (savedImage) {
-      setCustomImage(savedImage);
-    }
-  }, []);
-
-  const displayImage = customImage || defaultImage;
-
-  const saveImage = (base64: string) => {
-    setCustomImage(base64);
-    localStorage.setItem('portfolio_profile_image', base64);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        saveImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        saveImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const displayImage = defaultImage;
 
   const socialIcons = [
     { 
@@ -136,12 +83,7 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
         viewport={{ once: true }}
         className="relative z-10 w-full max-w-6xl aspect-[16/10] bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
       >
-        <div 
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          className={`w-full md:w-[45%] relative flex flex-col p-12 justify-end group overflow-hidden transition-colors duration-300 ${isDragging ? 'bg-primary/5' : ''}`}
-        >
+        <div className="w-full md:w-[45%] relative flex flex-col p-12 justify-end group overflow-hidden transition-colors duration-300">
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-transparent z-10" />
           
@@ -158,20 +100,6 @@ export const PortfolioDashboard = ({ onTerminate }: PortfolioDashboardProps) => 
               />
             </div>
           )}
-
-          <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[2px]">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => fileInputRef.current?.click()}
-              className="glass-button p-6 rounded-2xl flex flex-col items-center gap-3 border-primary/30"
-            >
-              <Camera className="w-8 h-8 text-primary" />
-              <span className="text-[10px] tracking-[0.4em] uppercase font-bold text-white">Change Portrait</span>
-            </motion.button>
-          </div>
-
-          <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
 
           <div className="relative z-20">
             <motion.div

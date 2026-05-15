@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, Plus, FileText, Trash2, Camera } from "lucide-react";
+import { Award, ExternalLink, Download, X, ChevronLeft, ChevronRight, ZoomIn, FileText } from "lucide-react";
 import Image from "next/image";
 
 interface Certificate {
@@ -63,12 +63,7 @@ export const CertificatesSection = () => {
   const [certs, setCerts] = useState<Certificate[]>([]);
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const replaceInputRef = useRef<HTMLInputElement>(null);
-  const [replacingId, setReplacingId] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem('portfolio_certs');
@@ -115,69 +110,6 @@ export const CertificatesSection = () => {
     setSelectedCert(certs[nextIndex]);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      Array.from(files).forEach(file => {
-        const isPdf = file.type === 'application/pdf';
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const newCert: Certificate = {
-            id: Math.random().toString(36).substr(2, 9),
-            title: file.name.split('.')[0],
-            issuer: "Uploaded Achievement",
-            date: new Date().getFullYear().toString(),
-            imageUrl: isPdf ? "" : reader.result as string,
-            isPdf: isPdf
-          };
-          setCerts(prev => [newCert, ...prev]);
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  };
-
-  const handleReplaceImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && replacingId) {
-      const isPdf = file.type === 'application/pdf';
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCerts(prev => prev.map(c => 
-          c.id === replacingId 
-            ? { 
-                ...c, 
-                imageUrl: isPdf ? "" : reader.result as string, 
-                isPdf
-              } 
-            : c
-        ));
-        setReplacingId(null);
-        if (selectedCert?.id === replacingId) {
-          setSelectedCert(prev => prev ? { ...prev, imageUrl: isPdf ? "" : reader.result as string, isPdf } : null);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const triggerReplace = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setReplacingId(id);
-    replaceInputRef.current?.click();
-  };
-
-  const removeCert = (id: string, e: React.MouseEvent | React.KeyboardEvent) => {
-    if ('stopPropagation' in e) e.stopPropagation();
-    if (confirm("Are you sure you want to delete this certificate? This action cannot be undone.")) {
-      const updatedCerts = certs.filter(c => c.id !== id);
-      setCerts(updatedCerts);
-      if (selectedCert?.id === id) {
-        handleCloseModal();
-      }
-    }
-  };
-
   const resetToDefaults = () => {
     if (confirm("Reset all certificates to original default view? All custom uploads will be lost.")) {
       setCerts(DEFAULT_CERTS);
@@ -185,24 +117,6 @@ export const CertificatesSection = () => {
     }
   };
 
-  const onDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const onDragLeave = () => setIsDragging(false);
-
-  const onDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = e.dataTransfer.files;
-    if (files) {
-      const simulatedEvent = {
-        target: { files }
-      } as unknown as React.ChangeEvent<HTMLInputElement>;
-      handleFileUpload(simulatedEvent);
-    }
-  };
 
   if (!isLoaded) return null;
 
@@ -232,7 +146,7 @@ export const CertificatesSection = () => {
             MY <span className="text-primary" style={{ filter: "url(#bubble-gloss)" }}>CERTIFICATES</span>
           </h2>
           <p className="text-white/40 text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
-            Personalize your gallery. Hover to replace images or delete entries.
+            Browse the certificate gallery and open each item for details.
           </p>
           
           <button 
@@ -243,43 +157,7 @@ export const CertificatesSection = () => {
           </button>
         </motion.div>
 
-        <input 
-          type="file" 
-          ref={fileInputRef} 
-          onChange={handleFileUpload} 
-          multiple 
-          className="hidden" 
-          accept="image/*,application/pdf"
-        />
-        <input 
-          type="file" 
-          ref={replaceInputRef} 
-          onChange={handleReplaceImage} 
-          className="hidden" 
-          accept="image/*,application/pdf"
-        />
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClick={() => fileInputRef.current?.click()}
-            className={`group relative glass-button p-8 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center cursor-pointer min-h-[400px] ${
-              isDragging ? "border-primary bg-primary/10" : "border-white/10 bg-white/5 hover:border-primary/50 hover:bg-white/10"
-            }`}
-          >
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Plus className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-white text-xl font-headline font-bold mb-2">Upload New</h3>
-            <p className="text-white/40 text-xs tracking-widest uppercase text-center max-w-[200px]">
-              Drag & drop or click to add your achievements
-            </p>
-          </motion.div>
 
           {certs.map((cert, index) => (
             <motion.div
@@ -308,16 +186,6 @@ export const CertificatesSection = () => {
                 )}
                 
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 backdrop-blur-[2px]">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={(e) => triggerReplace(cert.id, e)}
-                    className="glass-button w-3/4 py-3 rounded-xl flex items-center justify-center gap-2 border-primary/30 mb-3"
-                  >
-                    <Camera className="w-4 h-4 text-primary" />
-                    <span className="text-[9px] tracking-[0.3em] uppercase font-bold text-white">Replace File</span>
-                  </motion.button>
-                  
                   <div className="flex gap-3">
                     <button
                       onClick={() => handleOpenModal(cert, index)}
@@ -325,13 +193,6 @@ export const CertificatesSection = () => {
                       title="View Fullscreen"
                     >
                       <ZoomIn className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={(e) => removeCert(cert.id, e)}
-                      className="p-3 rounded-full bg-white/10 hover:bg-red-500/20 text-red-400 transition-colors border border-white/10"
-                      title="Delete Certificate"
-                    >
-                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -456,12 +317,6 @@ export const CertificatesSection = () => {
                   </div>
                   
                   <div className="pt-8 flex flex-col gap-4">
-                    <button 
-                      onClick={(e) => triggerReplace(selectedCert.id, e as any)}
-                      className="w-full glass-button py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold text-primary flex items-center justify-center gap-3"
-                    >
-                      <Camera className="w-4 h-4" /> Replace Image
-                    </button>
                     {selectedCert.imageUrl && !selectedCert.isPdf && (
                       <a 
                         href={selectedCert.imageUrl} 
@@ -471,12 +326,6 @@ export const CertificatesSection = () => {
                         <Download className="w-4 h-4" /> Save Copy
                       </a>
                     )}
-                    <button 
-                      onClick={(e) => removeCert(selectedCert.id, e as any)}
-                      className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 py-4 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold flex items-center justify-center gap-3 transition-colors border border-red-500/20"
-                    >
-                      <Trash2 className="w-4 h-4" /> Delete Certificate
-                    </button>
                   </div>
                 </div>
               </div>
