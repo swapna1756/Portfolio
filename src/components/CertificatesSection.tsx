@@ -20,14 +20,14 @@ const DEFAULT_CERTS: Certificate[] = [
     title: "Introduction to Cyber Security",
     issuer: "Simplilearn SkillUp",
     date: "2023",
-    imageUrl: "https://picsum.photos/seed/cert1/800/600",
+    imageUrl: "/Intro to cyber security.jpeg",
   },
   {
     id: "2",
     title: "Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate",
     issuer: "Oracle",
     date: "2023",
-    imageUrl: "https://picsum.photos/seed/cert2/800/600",
+    imageUrl: "/Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate.png",
   },
   {
     id: "4",
@@ -110,6 +110,8 @@ export const CertificatesSection = () => {
     setSelectedCert(certs[nextIndex]);
   };
 
+  const getImageUrl = (imageUrl: string) => imageUrl.startsWith('/') ? encodeURI(imageUrl) : imageUrl;
+
   const resetToDefaults = () => {
     if (confirm("Reset all certificates to original default view? All custom uploads will be lost.")) {
       setCerts(DEFAULT_CERTS);
@@ -178,7 +180,7 @@ export const CertificatesSection = () => {
                   </div>
                 ) : (
                   <Image
-                    src={cert.imageUrl}
+                    src={getImageUrl(cert.imageUrl)}
                     alt={cert.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
@@ -222,7 +224,7 @@ export const CertificatesSection = () => {
                   </button>
                   {cert.imageUrl && !cert.isPdf && (
                     <a 
-                      href={cert.imageUrl} 
+                      href={getImageUrl(cert.imageUrl)} 
                       download={`${cert.title}.png`}
                       className="p-2 text-white/40 hover:text-primary transition-colors"
                       onClick={(e) => e.stopPropagation()}
