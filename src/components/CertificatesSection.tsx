@@ -20,42 +20,47 @@ const DEFAULT_CERTS: Certificate[] = [
     title: "Introduction to Cyber Security",
     issuer: "Simplilearn SkillUp",
     date: "2023",
-    imageUrl: "/Intro to cyber security.jpeg",
+    imageUrl: "/Introduction to Cyber Security.pdf",
+    isPdf: true,
   },
   {
     id: "2",
     title: "Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate",
     issuer: "Oracle",
     date: "2023",
-    imageUrl: "/Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate.png",
+    imageUrl: "/Oracle Cloud Infrastructure 2023 AI Certif... .pdf",
+    isPdf: true,
   },
   {
     id: "4",
     title: "Cyber Security Internship Certificate",
     issuer: "SkillDzire",
     date: "2023",
-    imageUrl: "https://picsum.photos/seed/cert4/800/600",
+    imageUrl: "/Certificate of Internship.pdf",
+    isPdf: true,
   },
   {
     id: "5",
     title: "Python 3.4.3 Training Certificate",
     issuer: "IIT Bombay Spoken Tutorial",
     date: "2022",
-    imageUrl: "https://picsum.photos/seed/cert5/800/600",
+    imageUrl: "/Python Certification.pdf",
+    isPdf: true,
   },
   {
     id: "6",
     title: "Cyber Security Internship Acceptance Letter",
     issuer: "SkillDzire",
     date: "2023",
-    imageUrl: "https://picsum.photos/seed/cert6/800/600",
+    imageUrl: "/Tekkala Swapna_Acceptance Letter.pdf",
+    isPdf: true,
   },
   {
     id: "7",
     title: "AWS Cloud Practitioner Essentials",
     issuer: "Amazon Web Services",
     date: "2024",
-    imageUrl: "https://picsum.photos/seed/cert7/800/600",
+    imageUrl: "/AWS.jpeg",
   },
 ];
 
@@ -225,7 +230,7 @@ export const CertificatesSection = () => {
                   {cert.imageUrl && !cert.isPdf && (
                     <a 
                       href={getImageUrl(cert.imageUrl)} 
-                      download={`${cert.title}.png`}
+                      download={`${cert.title}.jpeg`}
                       className="p-2 text-white/40 hover:text-primary transition-colors"
                       onClick={(e) => e.stopPropagation()}
                     >
