@@ -28,7 +28,7 @@ const DEFAULT_CERTS: Certificate[] = [
     title: "Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate",
     issuer: "Oracle",
     date: "2023",
-    imageUrl: "/Oracle Cloud Infrastructure 2023 AI Certif... .pdf",
+    imageUrl: "/Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate.pdf",
     isPdf: true,
   },
   {
